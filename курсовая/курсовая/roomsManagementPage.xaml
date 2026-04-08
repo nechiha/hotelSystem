@@ -12,5 +12,87 @@
 
     <Grid>
         
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            
+            <Button x:Name="addRoomBtn"
+                Content="+ Добавить номер"
+                FontSize="20"
+                Width="250"
+                Height="50"
+                Foreground="White"
+                Background="#e490a5"
+                hc:BorderElement.CornerRadius="10"
+                Margin="50"
+                VerticalAlignment="Bottom"/>
+
+            <ComboBox x:Name="managmentFilterCB" 
+                      hc:InfoElement.Placeholder="Фильтры"
+                      FontSize="20"
+                      Style="{StaticResource ComboBoxExtend}"
+                      Width="250"
+                      Height="50"
+                      Margin="50"
+                      VerticalAlignment="Bottom"
+                      />
+
+            <hc:TextBox x:Name="searchManagementRoomsTB"
+                        Height="50"
+                        Width="700"
+                        Margin="50"
+                        VerticalAlignment="Bottom"
+                        hc:InfoElement.Placeholder="Поиск"
+                        FontSize="20"
+                        TextChanged="searchManagementRoomsTB_TextChanged"/>
+            
+        </StackPanel>
+
+        <DataGrid x:Name="workloadDataGrid"
+                  Grid.Row="1"
+                  Margin="50"
+                  Width="auto"
+                  HorizontalAlignment="Center"
+                  AutoGenerateColumns="False"
+                  HeadersVisibility="All" 
+                  RowHeaderWidth="60"
+                  FontSize="20">
+
+            <DataGrid.Columns>
+                <!--Binding="{Binding ...}"-->
+                <DataGridTextColumn IsReadOnly="True" 
+                                    Width="auto"
+                                    FontSize="20"
+                                    CanUserResize="False" 
+                            
+                                    Header="№ комнаты"/>
+                <DataGridTextColumn IsReadOnly="True"
+                                    Width="auto"
+                                    HeaderStringFormat=""
+                                    CanUserResize="False" 
+                            
+                                    Header="Этаж"/>
+                <DataGridTextColumn IsReadOnly="True"
+                                    Width="auto"
+                                    HeaderStringFormat=""
+                                    CanUserResize="False" 
+                            
+                            Header="Вместимость"/>
+                <DataGridTextColumn IsReadOnly="True"
+                                    Width="auto"
+                                    HeaderStringFormat=""
+                                    CanUserResize="False" 
+                            
+                                    Header="Категория"/>
+                
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+
     </Grid>
 </Page>

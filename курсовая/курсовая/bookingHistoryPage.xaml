@@ -20,18 +20,18 @@
                        Margin="0 100"
                        FontWeight="Medium"
                        Foreground="#e490a5"/>
-            
+
             <StackPanel Orientation="Horizontal" 
                         HorizontalAlignment="Center">
 
-                <hc:TextBox x:Name="searchTB"
+                <hc:TextBox x:Name="searchBookingTB"
                             Height="50"
                             Width="1000"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"
                             hc:InfoElement.Placeholder="Поиск"
                             FontSize="20"/>
-                
+
                 <Grid>
                     <ComboBox Height="50"
                               VerticalAlignment="Top"
@@ -47,46 +47,59 @@
             </StackPanel>
 
 
-            <StackPanel Margin="20 90 0 0" FlowDirection="LeftToRight">
-                <hc:Card Width="250"
-                         Height="260"
-                         BorderThickness="0"
-                         Effect="{DynamicResource EffectShadow2}"
-                         Margin="15"
-                         Padding="10"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Top"
-                         Cursor="Hand"
-                         MouseLeftButtonDown="Card_MouseLeftButtonDown">
+            <ListBox x:Name="RoomsListBox"
+                     Margin="0 50 0 0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                     d:ItemsSource="{d:SampleData ItemCount=5}"
+                     Style="{DynamicResource ListBoxModernStyle}"
+                     BorderThickness="0"
+                     BorderBrush="{x:Null}">
 
-                    <Image                   
-                       Stretch="UniformToFill"
-                       Margin="2"/>
+                <!-- Располагаем карточки в ряд (как у вас было) -->
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"
+                               HorizontalAlignment="Left" Cursor=""/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
-                    <hc:Card.Footer>
-                        <StackPanel Margin="12,10">
-                            <TextBlock Text="номер румы" 
-                                       FontSize="16"
-                                       Foreground="#e490a5"/>
+                <!-- Шаблон одной карточки (полностью ваш дизайн) -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <hc:Card Width="250"
+                             Height="260"
+                             BorderThickness="0"
+                             Margin="15"
+                             Padding="10"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Cursor="Hand"
+                             MouseLeftButtonDown="Card_MouseLeftButtonDown">
 
-                            <TextBlock Text="01.01.2000" 
-                                       FontSize="18" 
-                                       FontWeight="Bold"
-                                       Foreground="#db6c88"/>
+                            <Image Stretch="UniformToFill"
+                               Margin="2"/>
 
-                            <TextBlock Text="дополнительная хуйня" 
-                                       FontSize="12" 
-                                       Foreground="gray"
-                                       TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </hc:Card.Footer>
-                </hc:Card>
-            </StackPanel>
+                            <hc:Card.Footer>
+                                <StackPanel Margin="12,10">
+                                    <TextBlock Text="номер румы" 
+                                           FontSize="16"
+                                           Foreground="#e490a5"/>
 
+                                    <TextBlock Text="5500" 
+                                           FontSize="18" 
+                                           FontWeight="Bold"
+                                           Foreground="#db6c88"/>
 
-
-
-
+                                    <TextBlock Text="дополнительная хуйня" 
+                                           FontSize="12" 
+                                           Foreground="gray"
+                                           TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </hc:Card.Footer>
+                        </hc:Card>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
         </StackPanel>
     </Grid>

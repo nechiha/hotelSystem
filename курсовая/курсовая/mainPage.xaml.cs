@@ -23,6 +23,7 @@ namespace курсовая
         public mainPage()
         {
             InitializeComponent();
+            RoomsListBox.ItemsSource = new[] { 1, 2, 3, 4, 5 }; // заглушка
         }
 
         private void Card_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

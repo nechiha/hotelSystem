@@ -24,5 +24,10 @@ namespace курсовая
         {
             InitializeComponent();
         }
+
+        private void searchManagementRoomsTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
