@@ -1,0 +1,93 @@
+﻿<Page x:Class="курсовая.bookingHistoryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:курсовая"
+      mc:Ignorable="d" 
+      xmlns:hc="https://handyorg.github.io/handycontrol"
+      hc:WindowAttach.IsDragElement="False"
+      d:DesignHeight="1080" d:DesignWidth="1920"
+      Title="История бронирования">
+
+    <Grid>
+
+        <StackPanel>
+
+            <TextBlock Text="История бронирования"
+                       HorizontalAlignment="Center"
+                       FontSize="55"
+                       Margin="0 100"
+                       FontWeight="Medium"
+                       Foreground="#e490a5"/>
+            
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center">
+
+                <hc:TextBox x:Name="searchTB"
+                            Height="50"
+                            Width="1000"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            hc:InfoElement.Placeholder="Поиск"
+                            FontSize="20"/>
+                
+                <Grid>
+                    <ComboBox Height="50"
+                              VerticalAlignment="Top"
+                              Width="50"/>
+                    <Image Source="/Icon/filledFilter.png"
+                           IsHitTestVisible="False"
+                           Width="45"
+                           Height="45"
+                           VerticalAlignment="Top"
+                           Margin="0 3 0 0"/>
+                </Grid>
+
+            </StackPanel>
+
+
+            <StackPanel Margin="20 90 0 0" FlowDirection="LeftToRight">
+                <hc:Card Width="250"
+                         Height="260"
+                         BorderThickness="0"
+                         Effect="{DynamicResource EffectShadow2}"
+                         Margin="15"
+                         Padding="10"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Cursor="Hand"
+                         MouseLeftButtonDown="Card_MouseLeftButtonDown">
+
+                    <Image                   
+                       Stretch="UniformToFill"
+                       Margin="2"/>
+
+                    <hc:Card.Footer>
+                        <StackPanel Margin="12,10">
+                            <TextBlock Text="номер румы" 
+                                       FontSize="16"
+                                       Foreground="#e490a5"/>
+
+                            <TextBlock Text="01.01.2000" 
+                                       FontSize="18" 
+                                       FontWeight="Bold"
+                                       Foreground="#db6c88"/>
+
+                            <TextBlock Text="дополнительная хуйня" 
+                                       FontSize="12" 
+                                       Foreground="gray"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </hc:Card.Footer>
+                </hc:Card>
+            </StackPanel>
+
+
+
+
+
+
+        </StackPanel>
+    </Grid>
+</Page>

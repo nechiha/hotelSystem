@@ -1,0 +1,90 @@
+﻿<Page x:Class="курсовая.mainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:курсовая"
+      mc:Ignorable="d"
+      xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl"
+      d:DesignHeight="1080" d:DesignWidth="1920"
+      Title="Главная страница">
+
+    <Grid>
+        <!-- Верхняя панель с поиском и фильтром (оставил как было) -->
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Center">
+
+            <hc:TextBox x:Name="searchTB"
+                        Height="50"
+                        Width="1000"
+                        Margin="0 30 0 0"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        hc:InfoElement.Placeholder="Поиск"
+                        FontSize="20"/>
+            <Grid>
+                <ComboBox Height="50"
+                          VerticalAlignment="Top"
+                          Margin="0 30 0 0"
+                          Width="50"/>
+                <Image Source="/Icon/filledFilter.png"
+                       IsHitTestVisible="False"
+                       Width="45"
+                       Height="45"
+                       VerticalAlignment="Top"
+                       Margin="0 34 0 0"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- ListBox с карточками номеров -->
+        <ListBox x:Name="RoomsListBox"
+                 Margin="0 150 0 0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" d:ItemsSource="{d:SampleData ItemCount=5}">
+
+            <!-- Располагаем карточки в ряд (как у вас было) -->
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"
+                               HorizontalAlignment="Left"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <!-- Шаблон одной карточки (полностью ваш дизайн) -->
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <hc:Card Width="250"
+                             Height="260"
+                             BorderThickness="0"
+                             Margin="15"
+                             Padding="10"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Cursor="Hand"
+                             MouseLeftButtonDown="Card_MouseLeftButtonDown">
+
+                        <Image Stretch="UniformToFill"
+                               Margin="2"/>
+
+                        <hc:Card.Footer>
+                            <StackPanel Margin="12,10">
+                                <TextBlock Text="номер румы" 
+                                           FontSize="16"
+                                           Foreground="#e490a5"/>
+
+                                <TextBlock Text="5500" 
+                                           FontSize="18" 
+                                           FontWeight="Bold"
+                                           Foreground="#db6c88"/>
+
+                                <TextBlock Text="дополнительная хуйня" 
+                                           FontSize="12" 
+                                           Foreground="gray"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </hc:Card.Footer>
+                    </hc:Card>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Page>

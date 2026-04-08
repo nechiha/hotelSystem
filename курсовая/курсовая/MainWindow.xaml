@@ -1,0 +1,69 @@
+﻿<Window x:Class="курсовая.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:курсовая"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        Title="Вход в систему" Height="1080" Width="1920"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        ResizeMode="CanMinimize"
+        Foreground="White"
+        Icon="/Icon/IconWithoutBackground.png">
+    
+    <Grid Background="pink">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Text="Вход"
+               FontSize="75"
+               Margin="10"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Bottom"/>
+        <Line VerticalAlignment="Bottom"
+              X1="0" Y1="100" 
+              X2="1000" Y2="100" 
+              StrokeThickness="1" 
+              Stroke="white"
+              HorizontalAlignment="Center"/>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            
+            <hc:TextBox x:Name="insertLoginTB"
+                        Margin="20"
+                        Foreground="#e490a5"
+                        FontSize="20"
+                        Width="400"
+                        Height="45"
+                        hc:InfoElement.Placeholder="Введите логин"
+                        hc:InfoElement.Necessary="True"/>
+            <hc:PasswordBox x:Name="passwordBox"
+                            Width="400"
+                            Height="45"
+                            Margin="10"
+                            FontSize="20"
+                            Foreground="#e490a5"
+                            ShowEyeButton="True"
+                            hc:InfoElement.Placeholder="Введите пароль"
+                            IsSafeEnabled="False"
+                            hc:InfoElement.Necessary="True"/>
+            <!--UnsafePassword="{Binding password}"-->
+        </StackPanel>
+
+        <Button x:Name="enterBtn"
+                Content="Войти"
+                FontSize="25"
+                Grid.Row="2"
+                Width="300"
+                Height="80"
+                hc:BorderElement.CornerRadius="30"
+                Foreground="White"
+                Background="#e490a5"
+                Click="enterBtn_Click"/>
+    </Grid>
+</Window>

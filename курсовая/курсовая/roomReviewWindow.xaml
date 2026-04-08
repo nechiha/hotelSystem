@@ -1,0 +1,95 @@
+﻿<Window x:Class="курсовая.roomReviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:курсовая"
+        mc:Ignorable="d"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        ResizeMode="NoResize"
+        Title="Обзор номера" Height="700" Width="1150"
+        WindowStartupLocation="CenterScreen"
+        Icon="/Icon/IconWithoutBackground.png">
+    
+    <Grid x:Name="roomReviewGrid">
+
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Image Source="/ExampleImage.jpg"
+               Stretch="UniformToFill"
+               Height="600"
+               Margin="15"/>
+
+        <StackPanel Grid.Column="1">
+            <TextBlock Text="Номер комнаты"
+                       FontSize="40"
+                       FontWeight="Medium"
+                       HorizontalAlignment="Center"
+                       Margin="30"/>
+            <TextBlock Text="тип номера"
+                       HorizontalAlignment="Center"
+                       Margin="-20"
+                       Foreground="Gray"
+                       FontSize="15"/>
+
+            <ContentControl x:Name="DynamicContentControl" 
+                            Margin="10,0,20,0"/>
+
+
+
+
+
+
+            <!--<TextBlock Text="Описание номера и дополнительных опций, включенных или с возможностью включения в бронь за доп. плату "
+                       TextWrapping="Wrap"
+                       LineHeight="21"
+                       LineStackingStrategy="BlockLineHeight"
+                       TextAlignment="Justify"
+                       FontSize="20"
+                       Margin="10 120 20 0"
+                       HorizontalAlignment="Left"/>-->
+            
+            
+        </StackPanel>
+
+        <Button x:Name="escapeFromReviewBtn"
+                Content="Назад"
+                Grid.Row="1"
+                FontSize="25"
+                Width="200"
+                Height="40"
+                Margin="10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                hc:BorderElement.CornerRadius="10"
+                Click="escapeFromReviewBtn_Click"/>
+
+        <Button x:Name="toBookBtn"
+                Content="Забронировать"
+                Grid.Column="2"
+                Grid.Row="1"
+                FontSize="25"
+                Width="250"
+                Height="55"
+                Margin="10"
+                Foreground="White"
+                Background="#e490a5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                hc:BorderElement.CornerRadius="10"
+                Visibility="Hidden"
+                Click="toBookBtn_Click"/>
+
+
+
+
+    </Grid>
+</Window>
