@@ -9,16 +9,44 @@
              hc:WindowAttach.IsDragElement="False"
              d:DesignHeight="1080" d:DesignWidth="1920">
     <Grid>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Кем:" FontWeight="Bold" Margin="0,0,10,5"/>
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding GuestName}" Margin="0,0,0,5"/>
+        <TextBlock Grid.Row="0" 
+                   Grid.Column="0" 
+                   Text="Кем:" 
+                   FontWeight="Bold"
+                   Margin="0,0,10,5"/>
+        <TextBlock Grid.Row="0" 
+                   Grid.Column="1" 
+                   Text="{Binding GuestName}"
+                   Margin="0,0,0,5"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Забронировано:" FontWeight="Bold" Margin="0,0,10,5"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding BookingDate}" Margin="0,0,0,5"/>
+        <TextBlock Grid.Row="1" 
+                   Grid.Column="0" Text="Забронировано:" 
+                   FontWeight="Bold" Margin="0,0,10,5"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" 
+                   Text="{Binding BookingDate}"
+                   Margin="0,0,0,5"/>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Проведено дней:" FontWeight="Bold" Margin="0,0,10,5"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding DaysSpent}" Margin="0,0,0,5"/>
+        <TextBlock Grid.Row="2" 
+                   Grid.Column="0" 
+                   Text="Проведено дней:" 
+                   FontWeight="Bold"
+                   Margin="0,0,10,5"/>
+        <TextBlock Grid.Row="2" 
+                   Grid.Column="1" 
+                   Text="{Binding DaysSpent}"
+                   Margin="0,0,0,5"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Доп. опции:" FontWeight="Bold" Margin="0,0,10,5"/>
-        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ExtraOptions}" TextWrapping="Wrap"/>
+        <TextBlock Grid.Row="3" 
+                   Grid.Column="0" 
+                   Text="Доп. опции:" 
+                   FontWeight="Bold" 
+                   Margin="0,0,10,5"/>
+        <TextBlock Grid.Row="3" 
+                   Grid.Column="1" 
+                   Text="{Binding ExtraOptions}"
+                   TextWrapping="Wrap"/>
+
+        <Button x:Name="deleteBookingBtn"
+                Content="Отменить"/>
     </Grid>
 </UserControl>

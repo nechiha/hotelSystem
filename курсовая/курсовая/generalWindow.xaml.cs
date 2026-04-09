@@ -53,6 +53,8 @@ namespace курсовая
 
         private void exitBtn_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: create your own exit-window or download Xceed.Wpf.Toolkit
+
             MessageBoxResult result = MessageBox.Show(
                 "Вы уверены, что хотите выйти?",
                 "Подтверждение",

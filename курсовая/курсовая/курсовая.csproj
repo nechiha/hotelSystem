@@ -58,6 +58,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="addRoomWindow.xaml.cs">
+      <DependentUpon>addRoomWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BookingHistoryCard.xaml.cs">
       <DependentUpon>BookingHistoryCard.xaml</DependentUpon>
     </Compile>
@@ -67,6 +70,10 @@
     <Compile Include="generalWindow.xaml.cs">
       <DependentUpon>generalWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="addRoomWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BookingHistoryCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

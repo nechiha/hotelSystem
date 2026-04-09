@@ -29,5 +29,11 @@ namespace курсовая
         {
 
         }
+
+        private void addRoomBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var addRoomWindow = new addRoomWindow();
+            addRoomWindow.Show();
+        }
     }
 }

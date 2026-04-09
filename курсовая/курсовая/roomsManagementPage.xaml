@@ -21,15 +21,16 @@
                     HorizontalAlignment="Center">
             
             <Button x:Name="addRoomBtn"
-                Content="+ Добавить номер"
-                FontSize="20"
-                Width="250"
-                Height="50"
-                Foreground="White"
-                Background="#e490a5"
-                hc:BorderElement.CornerRadius="10"
-                Margin="50"
-                VerticalAlignment="Bottom"/>
+                    Content="+ Добавить номер"
+                    FontSize="20"
+                    Width="250"
+                    Height="50"
+                    Foreground="White"
+                    Background="#e490a5"
+                    hc:BorderElement.CornerRadius="10"
+                    Margin="50"
+                    VerticalAlignment="Top"
+                    Click="addRoomBtn_Click"/>
 
             <ComboBox x:Name="managmentFilterCB" 
                       hc:InfoElement.Placeholder="Фильтры"
@@ -38,14 +39,14 @@
                       Width="250"
                       Height="50"
                       Margin="50"
-                      VerticalAlignment="Bottom"
+                      VerticalAlignment="Top"
                       />
 
             <hc:TextBox x:Name="searchManagementRoomsTB"
                         Height="50"
                         Width="700"
                         Margin="50"
-                        VerticalAlignment="Bottom"
+                        VerticalAlignment="Top"
                         hc:InfoElement.Placeholder="Поиск"
                         FontSize="20"
                         TextChanged="searchManagementRoomsTB_TextChanged"/>
@@ -56,7 +57,9 @@
                   Grid.Row="1"
                   Margin="50"
                   Width="auto"
+                  Height="auto"
                   HorizontalAlignment="Center"
+                  VerticalAlignment="Top"
                   AutoGenerateColumns="False"
                   HeadersVisibility="All" 
                   RowHeaderWidth="60"
