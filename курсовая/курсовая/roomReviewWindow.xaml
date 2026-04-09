@@ -84,7 +84,7 @@
                 Background="#e490a5"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
-                hc:BorderElement.CornerRadius="10"
+                hc:BorderElement.CornerRadius="15"
                 Visibility="Hidden"
                 Click="toBookBtn_Click"/>
 

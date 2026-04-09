@@ -11,6 +11,9 @@
         WindowStartupLocation="CenterScreen"
         Icon="/Icon/IconWithoutBackground.png">
     <Grid>
-        
+        <TextBlock Text="Создание номера"
+                   FontSize="40"
+                   HorizontalAlignment="Center"
+                   Margin="50"/>
     </Grid>
 </Window>

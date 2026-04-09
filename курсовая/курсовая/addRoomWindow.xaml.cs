@@ -23,5 +23,10 @@ namespace курсовая
         {
             InitializeComponent();
         }
+
+        private void saveRoomBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

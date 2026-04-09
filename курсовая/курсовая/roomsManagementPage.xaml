@@ -22,7 +22,7 @@
                 <TextBlock Text="Управление номерами"
                            FontSize="55"
                            VerticalAlignment="Top"
-                           Margin="30"
+                           Margin="0 100"
                            HorizontalAlignment="Center"
                            FontWeight="Medium"
                            Foreground="#e490a5"/>
@@ -34,12 +34,12 @@
             <Button x:Name="addRoomBtn"
                     Content="+ Добавить номер"
                     FontSize="20"
-                    Width="250"
-                    Height="50"
+                    Width="240"
+                    Height="45"
                     Foreground="White"
                     Background="#e490a5"
-                    hc:BorderElement.CornerRadius="10"
-                    Margin="50"
+                    hc:BorderElement.CornerRadius="15"
+                    Margin="20"                   
                     VerticalAlignment="Top"
                     Click="addRoomBtn_Click"/>
 
@@ -48,17 +48,19 @@
                       FontSize="20"
                       Style="{StaticResource ComboBoxExtend}"
                       Width="250"
-                      Height="50"
-                      Margin="50"
+                      Height="45"
+                      Margin="20"
+                      hc:BorderElement.CornerRadius="13"
                       VerticalAlignment="Top"/>
 
             <hc:TextBox x:Name="searchManagementRoomsTB"
-                        Height="50"
+                        Height="45"
                         Width="700"
-                        Margin="50"
+                        Margin="20"
                         VerticalAlignment="Top"
                         hc:InfoElement.Placeholder="Поиск"
                         FontSize="20"
+                        hc:BorderElement.CornerRadius="13"
                         TextChanged="searchManagementRoomsTB_TextChanged"/>
             
         </StackPanel>
@@ -76,7 +78,8 @@
                   AutoGenerateColumns="False"
                   HeadersVisibility="All" 
                   RowHeaderWidth="60"
-                  FontSize="20">
+                  FontSize="20"
+                  hc:BorderElement.CornerRadius="13">
 
             <DataGrid.Columns>
                 <!--Binding="{Binding ...}"-->
@@ -97,12 +100,12 @@
                                     HeaderStringFormat=""
                                     CanUserResize="False" 
                             
-                            Header="Вместимость"/>
+                                    Header="Вместимость"/>
                 <DataGridTextColumn IsReadOnly="True"
                                     Width="auto"
                                     HeaderStringFormat=""
-                                    CanUserResize="False" 
-                            
+                                    CanUserResize="False"
+                                    
                                     Header="Категория"/>
                 
             </DataGrid.Columns>
