@@ -8,18 +8,29 @@
       xmlns:hc="https://handyorg.github.io/handycontrol"
       hc:WindowAttach.IsDragElement="False"
       d:DesignHeight="1080" d:DesignWidth="1920"
-      Title="Управление номерами">
+      Title="Номерной фонд">
 
     <Grid>
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.3*"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal"
+
+
+        
+        
+
+            <StackPanel Orientation="Vertical">
+                
+                <TextBlock Text="Управление номерами"
+                           FontSize="55"
+                           VerticalAlignment="Top"
+                           Margin="30"
+                           HorizontalAlignment="Center"
+                           FontWeight="Medium"
+                           Foreground="#e490a5"/>
+                
+                <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center">
-            
+                                   
+
             <Button x:Name="addRoomBtn"
                     Content="+ Добавить номер"
                     FontSize="20"
@@ -39,8 +50,7 @@
                       Width="250"
                       Height="50"
                       Margin="50"
-                      VerticalAlignment="Top"
-                      />
+                      VerticalAlignment="Top"/>
 
             <hc:TextBox x:Name="searchManagementRoomsTB"
                         Height="50"
@@ -52,14 +62,17 @@
                         TextChanged="searchManagementRoomsTB_TextChanged"/>
             
         </StackPanel>
+                    
+                    
+            </StackPanel>
+            
 
         <DataGrid x:Name="workloadDataGrid"
-                  Grid.Row="1"
                   Margin="50"
                   Width="auto"
                   Height="auto"
                   HorizontalAlignment="Center"
-                  VerticalAlignment="Top"
+                  VerticalAlignment="Center"
                   AutoGenerateColumns="False"
                   HeadersVisibility="All" 
                   RowHeaderWidth="60"

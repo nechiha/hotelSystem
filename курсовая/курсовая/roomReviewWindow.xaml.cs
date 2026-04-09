@@ -124,8 +124,8 @@ namespace курсовая
         private void toBookBtn_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Здесь будет открытие окна бронирования
-            MessageBox.Show("Открыть окно бронирования", "Бронирование",
-                           MessageBoxButton.OK, MessageBoxImage.Information);
+            var bookingWindow = new bookingWindow();
+            bookingWindow.Show();
         }
     }
 }

@@ -1,0 +1,128 @@
+﻿<Window x:Class="курсовая.bookingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:курсовая"
+        mc:Ignorable="d"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        ResizeMode="NoResize"
+        Title="Бронирование" Height="700" Width="1150"
+        WindowStartupLocation="CenterScreen"
+        Icon="/Icon/IconWithoutBackground.png">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Создание брони"
+                   FontSize="40"
+                   VerticalAlignment="Bottom"
+                   HorizontalAlignment="Center"
+                   Margin="20"
+                   Grid.ColumnSpan="2"/>
+
+        <StackPanel Grid.Row="1"
+                    Margin="50">
+
+            <TextBox x:Name="insertSurname"
+                     Width="300"
+                     Style="{StaticResource TextBoxExtend}" 
+                     hc:InfoElement.Title="Фамилия" 
+                     FontSize="15"
+                     VerticalAlignment="Center"
+                     Margin="5"/>
+            <TextBox x:Name="insertName"
+                     Width="300"
+                     Style="{StaticResource TextBoxExtend}" 
+                     hc:InfoElement.Title="Имя" 
+                     FontSize="15"
+                     VerticalAlignment="Center"
+                     Margin="5"/>
+            <TextBox x:Name="insertPatronomyc"
+                     Width="300"
+                     Style="{StaticResource TextBoxExtend}" 
+                     hc:InfoElement.Title="Отчество" 
+                     FontSize="15"
+                     VerticalAlignment="Center"
+                     Margin="5"/>
+            <ComboBox x:Name="peopleAmountCB"
+                      Width="300"
+                      Style="{StaticResource ComboBoxExtend}" 
+                      hc:InfoElement.Title="Кол-во персон" 
+                      FontSize="15"
+                      VerticalAlignment="Center"
+                      Margin="5"/>
+            <hc:DatePicker x:Name="arriveDatePick"
+                           Width="300"                         
+                           hc:InfoElement.Placeholder="Заезд"
+                           FontSize="15"
+                           VerticalAlignment="Center"
+                           Height="30"
+                           Margin="25"/>
+            <hc:DatePicker x:Name="departureDatePick"
+                           Width="300"                         
+                           hc:InfoElement.Placeholder="Выезд"
+                           FontSize="15"
+                           VerticalAlignment="Center"
+                           Height="30"
+                           Margin="5"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="50">
+
+            <ComboBox x:Name="insertOptionCB"
+                     Width="300"
+                     Style="{StaticResource ComboBoxExtend}" 
+                     hc:InfoElement.Title="Опция (руб)." 
+                     FontSize="15"
+                     VerticalAlignment="Center"
+                     Margin="0"/>
+            <Button x:Name="addOptionBtn"
+                    Content="+"
+                    Height="35"
+                    Width="35"                   
+                    Margin="85 30"
+                    FontSize="15"
+                    HorizontalAlignment="Left"
+                    hc:BorderElement.CornerRadius="20"
+                    Click="addOptionBtn_Click"/>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="2"
+                    VerticalAlignment="Bottom"                    
+                    Width="1150">
+
+            <Button x:Name="escapeFromBookingBtn"
+                    Content="Назад"
+                    FontSize="15"
+                    Width="130"
+                    Height="29"
+                    Margin="10"                   
+                    hc:BorderElement.CornerRadius="10"
+                    Click="escapeFromBookingBtn_Click"/>
+
+            <Button x:Name="toBookBtn"
+                    Content="Забронировать"
+                    FontSize="17"
+                    Width="200"
+                    Height="45"
+                    Margin="315 0 0 15"
+                    Foreground="White"
+                    Background="#e490a5"                   
+                    hc:BorderElement.CornerRadius="15"
+                    Click="toBookBtn_Click"/>
+
+        </StackPanel>
+    </Grid>
+</Window>

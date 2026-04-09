@@ -67,6 +67,9 @@
     <Compile Include="bookingHistoryPage.xaml.cs">
       <DependentUpon>bookingHistoryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="bookingWindow.xaml.cs">
+      <DependentUpon>bookingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="generalWindow.xaml.cs">
       <DependentUpon>generalWindow.xaml</DependentUpon>
     </Compile>
@@ -79,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="bookingHistoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="bookingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
