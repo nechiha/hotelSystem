@@ -28,5 +28,10 @@ namespace курсовая
         {
 
         }
+
+        private void saveRoomBtn_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

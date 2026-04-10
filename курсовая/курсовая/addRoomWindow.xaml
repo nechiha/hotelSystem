@@ -12,9 +12,63 @@
         Icon="/Icon/IconWithoutBackground.png"
         FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
     <Grid>
+        
         <TextBlock Text="Создание номера"
                    FontSize="40"
+                   FontWeight="Medium"
                    HorizontalAlignment="Center"
-                   Margin="50"/>
+                   Margin="60"/>
+        
+        <StackPanel VerticalAlignment="Bottom">
+            
+            <ComboBox x:Name="chooseFloorCB"
+                      Height="35"
+                      hc:BorderElement.CornerRadius="10"                      
+                      Width="300"
+                      hc:InfoElement.Placeholder="Этаж"
+                      Style="{StaticResource ComboBoxExtend}"
+                      FontSize="15"
+                      VerticalAlignment="Center"
+                      Margin="10"/>
+            <ComboBox x:Name="chooseCapacityCB"
+                      Height="35"
+                      hc:BorderElement.CornerRadius="10"
+                      Width="300"
+                      hc:InfoElement.Placeholder="Вместимость"
+                      Style="{StaticResource ComboBoxExtend}"
+                      FontSize="15"
+                      VerticalAlignment="Center"
+                      Margin="10"/>
+            <ComboBox x:Name="chooseCategoryCB"
+                      Height="35"
+                      hc:BorderElement.CornerRadius="10"
+                      Width="300"
+                      hc:InfoElement.Placeholder="Категория"
+                      Style="{StaticResource ComboBoxExtend}"
+                      FontSize="15"
+                      VerticalAlignment="Center"
+                      Margin="10"/>
+            <TextBox x:Name="insertRoomTB"
+                      Height="35"
+                      hc:BorderElement.CornerRadius="10"                        
+                      Width="300"
+                      hc:InfoElement.Placeholder="№ комнаты"
+                      Style="{StaticResource TextBoxExtend}"
+                      FontSize="15"
+                      VerticalAlignment="Center"
+                      Margin="10"/>
+
+            <Button x:Name="saveRoomBtn"
+                    Content="Сохранить"
+                    FontSize="25"
+                    Width="250"
+                    Height="55"
+                    Margin="0 150 0 20"
+                    Foreground="White"
+                    Background="#e490a5"
+                    hc:BorderElement.CornerRadius="15"
+                    Click="saveRoomBtn_Click_1"/>
+
+        </StackPanel>
     </Grid>
 </Window>

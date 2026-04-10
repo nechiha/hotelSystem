@@ -17,10 +17,11 @@
         <StackPanel>
 
             <TextBlock Text="Загрузка за: "
-                   FontSize="50"
-                   Foreground="#e490a5"
-                   HorizontalAlignment="Left"                 
-                   Margin="50 70 0 0"/>
+                       FontSize="50"
+                       FontWeight="Medium"
+                       Foreground="#e490a5"
+                       HorizontalAlignment="Left"                 
+                       Margin="50 70 0 0"/>
             <ComboBox x:Name="workloadPeriod"
                       hc:InfoElement.Placeholder="Текущий период"
                       Style="{StaticResource ComboBoxExtend}"
