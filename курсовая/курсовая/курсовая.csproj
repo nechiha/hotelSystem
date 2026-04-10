@@ -70,6 +70,12 @@
     <Compile Include="bookingWindow.xaml.cs">
       <DependentUpon>bookingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="createRateWindow.xaml.cs">
+      <DependentUpon>createRateWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="editRateWindow.xaml.cs">
+      <DependentUpon>editRateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="generalWindow.xaml.cs">
       <DependentUpon>generalWindow.xaml</DependentUpon>
     </Compile>
@@ -86,6 +92,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="bookingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="createRateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="editRateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

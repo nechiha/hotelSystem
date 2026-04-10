@@ -12,6 +12,102 @@
       FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
 
     <Grid>
-        
+
+        <TextBlock Text="Тарифы"
+                   HorizontalAlignment="Center"
+                   FontSize="55"
+                   Margin="-100 100 0 0"
+                   FontWeight="Medium"
+                   Foreground="#e490a5"/>
+
+        <Button x:Name="createNewRateBtn"
+                Content="+ Создать новый"
+                FontSize="20"
+                Width="240"
+                Height="45"
+                Foreground="White"
+                Background="#e490a5"
+                hc:BorderElement.CornerRadius="15"
+                Margin="50 -400 0 0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Click="createNewRateBtn_Click"/>
+
+        <!--<StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <Label Height="80"
+                   Width="1000"
+                   Margin="50"
+                   BorderBrush="{x:Null}"
+                   hc:BorderElement.CornerRadius="10"
+                   HorizontalContentAlignment="Left">
+                <TextBlock Text="Текущий тариф"
+                           FontSize="20"/>
+            </Label>-->
+            <!--<Button x:Name="editRateBtn"
+                    Content="Изменить"
+                    FontSize="20"
+                    Margin="0 -400 0 0"
+                    Width="230"
+                    Height="55"
+                    Foreground="White"
+                    Background="#e490a5"
+                    hc:BorderElement.CornerRadius="15"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="editRateBtn_Click"/>-->
+        <!--</StackPanel>-->
+
+        <!-- ListBox со списком тарифов (только радиокнопки и названия) -->
+        <ListBox x:Name="RatesListBox"
+                 Margin="0 400 0 0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 d:ItemsSource="{d:SampleData ItemCount=5}"
+                 Style="{DynamicResource ListBoxModernStyle}"
+                 BorderThickness="0"
+                 BorderBrush="{x:Null}"
+                 VerticalAlignment="Top">
+            
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center"
+                               Margin="10"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <!-- Шаблон одной карточки (полностью ваш дизайн) -->
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton GroupName="currentRateSelection"
+                                     VerticalAlignment="Center"
+                                     IsChecked="{Binding IsSelected}"
+                                     Margin="10"
+                                     Background="Pink"/>
+                        
+                        <Label x:Name="currentRateBtn"
+                            Width="900"
+                               Height="50"
+                               hc:BorderElement.CornerRadius="12"
+                               MouseLeftButtonDown="currentRateBtn_MouseLeftButtonDown">
+                        <TextBlock Text="Текущий тариф"
+                                   FontSize="17"/>
+                    </Label>
+                        <Button x:Name="editRateBtn"
+                                Content="Изменить"
+                                FontSize="17"
+                                Width="270"
+                                Height="50"
+                                Margin="20"
+                                Foreground="White"
+                                Background="#e490a5"
+                                hc:BorderElement.CornerRadius="15"
+                                Click="editRateBtn_Click"/>
+                    </StackPanel>
+                    
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Page>

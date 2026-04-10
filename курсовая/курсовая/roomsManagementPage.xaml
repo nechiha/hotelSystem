@@ -51,7 +51,7 @@
                       Width="250"
                       Height="45"
                       Margin="20"
-                      hc:BorderElement.CornerRadius="13"
+                      hc:BorderElement.CornerRadius="10"
                       VerticalAlignment="Top"/>
 
             <hc:TextBox x:Name="searchManagementRoomsTB"
@@ -61,7 +61,7 @@
                         VerticalAlignment="Top"
                         hc:InfoElement.Placeholder="Поиск"
                         FontSize="20"
-                        hc:BorderElement.CornerRadius="13"
+                        hc:BorderElement.CornerRadius="10"
                         TextChanged="searchManagementRoomsTB_TextChanged"/>
             
         </StackPanel>
@@ -79,7 +79,7 @@
                   AutoGenerateColumns="False"
                   HeadersVisibility="All" 
                   RowHeaderWidth="60"
-                  FontSize="20"
+                  FontSize="18"
                   hc:BorderElement.CornerRadius="13">
 
             <DataGrid.Columns>

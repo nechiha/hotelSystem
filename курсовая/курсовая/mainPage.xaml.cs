@@ -29,7 +29,7 @@ namespace курсовая
         private void Card_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var roomReviewWindow = new roomReviewWindow();
-            roomReviewWindow.Show();
+            roomReviewWindow.ShowDialog();
         }
     }
 }

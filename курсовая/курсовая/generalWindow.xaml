@@ -77,7 +77,7 @@
 
             <Button x:Name="roomsManagementBtn"
                     Content="Управление номерами"
-                    FontSize="22"
+                    FontSize="21"
                     Grid.Row="1"
                     Width="250"
                     Height="50"

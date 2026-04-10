@@ -11,7 +11,6 @@
       FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC"
       Title="Отчет по загрузке">
 
-
     <Grid>
 
         <StackPanel>
@@ -30,18 +29,19 @@
                       Height="45"
                       Width="400"
                       HorizontalAlignment="Left"/>
+            
             <DataGrid x:Name="workloadDataGrid"
                       Margin="50 50 0 0"
                       Width="auto"
                       HorizontalAlignment="Left"
                       AutoGenerateColumns="False"
                       HeadersVisibility="All" 
+                      FontSize="18"
                       RowHeaderWidth="60">
 
                 <DataGrid.Columns> <!--Binding="{Binding ...}"--> 
                     <DataGridTextColumn IsReadOnly="True" 
                                         Width="auto"
-                                        FontSize="20"
                                         CanUserResize="False" 
                                         
                                         Header="Кол-во забронированных номеров"/>
@@ -49,7 +49,6 @@
                                         Width="auto"
                                         HeaderStringFormat=""
                                         CanUserResize="False" 
-                                        
                                         Header="Кол-во забронированных VIP номеров"/>
                 </DataGrid.Columns>
             </DataGrid>
