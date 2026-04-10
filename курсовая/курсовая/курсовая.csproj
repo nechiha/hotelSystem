@@ -166,6 +166,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\ChironGoRoundTC-Black.ttf" />
+    <Resource Include="Fonts\ChironGoRoundTC-Bold.ttf" />
+    <Resource Include="Fonts\ChironGoRoundTC-ExtraBold.ttf" />
+    <Resource Include="Fonts\ChironGoRoundTC-ExtraLight.ttf" />
+    <Resource Include="Fonts\ChironGoRoundTC-Light.ttf" />
+    <Resource Include="Fonts\ChironGoRoundTC-Medium.ttf" />
+    <Resource Include="Fonts\ChironGoRoundTC-Regular.ttf" />
+    <Resource Include="Fonts\ChironGoRoundTC-SemiBold.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -176,7 +184,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icon.png" />
+    <Resource Include="Icon\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icon\IconWithoutBackground.png" />
@@ -188,13 +196,14 @@
     <Resource Include="Image\ExampleImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ExampleImage.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icon\filter.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icon\filledFilter.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ExampleImage.jpg" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

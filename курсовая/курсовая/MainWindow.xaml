@@ -11,8 +11,9 @@
         WindowState="Maximized"
         ResizeMode="CanMinimize"
         Foreground="White"
-        Icon="/Icon/IconWithoutBackground.png">
-    
+        Icon="/Icon/IconWithoutBackground.png"
+        FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
+
     <Grid Background="pink">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>

@@ -7,16 +7,18 @@
              mc:Ignorable="d" 
              xmlns:hc="https://handyorg.github.io/handycontrol"
              hc:WindowAttach.IsDragElement="False"
-             d:DesignHeight="1080" d:DesignWidth="1920">
+             d:DesignHeight="1080" d:DesignWidth="1920"
+             FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
+
 
     <Grid>
         <StackPanel Grid.Column="1">
             
             <TextBlock Text="Описание номера и дополнительных опций, включенных или с возможностью включения в бронь за доп. плату "
                        TextWrapping="Wrap"
-                       LineHeight="21"
+                       LineHeight="25"
                        LineStackingStrategy="BlockLineHeight"
-                       TextAlignment="Justify"
+                       TextAlignment="Left"
                        FontSize="20"
                        Margin="10 120 20 0"
                        HorizontalAlignment="Left"/>

@@ -9,7 +9,8 @@
         ResizeMode="NoResize"
         Title="Добавление номера" Height="700" Width="1150"
         WindowStartupLocation="CenterScreen"
-        Icon="/Icon/IconWithoutBackground.png">
+        Icon="/Icon/IconWithoutBackground.png"
+        FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
     <Grid>
         <TextBlock Text="Создание номера"
                    FontSize="40"

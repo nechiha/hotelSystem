@@ -10,8 +10,9 @@
         ResizeMode="CanMinimize"
         WindowState="Maximized"
         Icon="/Icon/IconWithoutBackground.png"
-        Foreground="White">
-    
+        Foreground="White"
+        FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
+
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.2*"></ColumnDefinition>

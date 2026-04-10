@@ -9,7 +9,8 @@
         ResizeMode="NoResize"
         Title="Бронирование" Height="700" Width="1150"
         WindowStartupLocation="CenterScreen"
-        Icon="/Icon/IconWithoutBackground.png">
+        Icon="/Icon/IconWithoutBackground.png"
+        FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.2*"></RowDefinition>
@@ -58,14 +59,14 @@
                       FontSize="15"
                       VerticalAlignment="Center"
                       Margin="5"/>
-            <hc:DatePicker x:Name="arriveDatePick"
+            <hc:DateTimePicker x:Name="arriveDatePick"
                            Width="300"                         
                            hc:InfoElement.Placeholder="Заезд"
                            FontSize="15"
                            VerticalAlignment="Center"
                            Height="30"
                            Margin="25"/>
-            <hc:DatePicker x:Name="departureDatePick"
+            <hc:DateTimePicker x:Name="departureDatePick"
                            Width="300"                         
                            hc:InfoElement.Placeholder="Выезд"
                            FontSize="15"

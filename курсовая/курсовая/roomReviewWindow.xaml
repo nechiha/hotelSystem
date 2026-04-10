@@ -9,8 +9,9 @@
         ResizeMode="NoResize"
         Title="Обзор номера" Height="700" Width="1150"
         WindowStartupLocation="CenterScreen"
-        Icon="/Icon/IconWithoutBackground.png">
-    
+        Icon="/Icon/IconWithoutBackground.png"
+        FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
+
     <Grid x:Name="roomReviewGrid">
 
         <Grid.RowDefinitions>
@@ -23,7 +24,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Image Source="/ExampleImage.jpg"
+        <Image Source="D:\hotelSystem\курсовая\курсовая\Image\ExampleImage.jpg"
                Stretch="UniformToFill"
                Height="600"
                Margin="15"/>
@@ -63,9 +64,9 @@
         <Button x:Name="escapeFromReviewBtn"
                 Content="Назад"
                 Grid.Row="1"
-                FontSize="25"
-                Width="200"
-                Height="40"
+                FontSize="17"
+                Width="140"
+                Height="30"
                 Margin="10"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
