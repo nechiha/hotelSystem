@@ -23,12 +23,30 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Изменение тарифа"
-                   FontSize="40"
-                   VerticalAlignment="Bottom"
-                   HorizontalAlignment="Center"
-                   Margin="40"
-                   Grid.ColumnSpan="2"/>
+        <StackPanel VerticalAlignment="top"
+            HorizontalAlignment="Center"
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Grid.RowSpan="2"
+            Width="1000"
+            Height="250">
+    <TextBlock Text="Изменение тарифа"
+               FontSize="40"
+               HorizontalAlignment="Center"
+               Margin="0 25"/>
+    <TextBox x:Name="insertRateNameTB"
+             Margin="60 40"
+             Width="500"
+             Height="35"
+             Style="{StaticResource TextBoxExtend}"
+             hc:BorderElement.CornerRadius="10"
+             FontSize="15"
+             HorizontalAlignment="Left"
+             VerticalAlignment="Bottom"/>
+    <TextBlock Text="Стоимость:"
+               FontSize="15"
+               Margin="65 0 0 0"/>
+</StackPanel>
 
         <StackPanel Grid.Row="1"
                      VerticalAlignment="Center">
