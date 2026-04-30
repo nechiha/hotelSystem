@@ -17,7 +17,7 @@
                    FontSize="40"
                    FontWeight="Medium"
                    HorizontalAlignment="Center"
-                   Margin="60"/>
+                   Margin="50"/>
         
         <StackPanel VerticalAlignment="Bottom">
             
@@ -58,16 +58,39 @@
                       VerticalAlignment="Center"
                       Margin="10"/>
 
+            <TextBox x:Name="insertDescriptionTB"
+                     Height="100"
+                     Width="300"
+                     hc:BorderElement.CornerRadius="10"
+                     hc:InfoElement.Placeholder="Описание"
+                     Style="{StaticResource TextBoxExtend}"
+                     FontSize="15"
+                     Margin="10"
+                     VerticalContentAlignment="Top"
+                     Padding="8"
+                     VerticalScrollBarVisibility="Auto"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"/>
+
+            <hc:ImageSelector Height="100"
+                              Width="200"/>
+
             <Button x:Name="saveRoomBtn"
                     Content="Сохранить"
                     FontSize="25"
                     Width="250"
                     Height="55"
-                    Margin="0 150 0 20"
                     Foreground="White"
                     Background="#e490a5"
+                    Margin="0 20"
                     hc:BorderElement.CornerRadius="15"
                     Click="saveRoomBtn_Click_1"/>
+            
+            
+            
+            
+            
+            
 
         </StackPanel>
     </Grid>
