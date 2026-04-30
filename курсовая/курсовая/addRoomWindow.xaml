@@ -72,7 +72,8 @@
                      TextWrapping="Wrap"
                      AcceptsReturn="True"/>
 
-            <hc:ImageSelector Height="100"
+            <hc:ImageSelector x:Name="imageSelector" 
+                              Height="100"
                               Width="200"/>
 
             <Button x:Name="saveRoomBtn"
