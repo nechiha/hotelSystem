@@ -24,6 +24,7 @@ namespace курсовая
         public generalWindow()
         {
             InitializeComponent();
+            
         }
 
         private void mainBtn_Click(object sender, RoutedEventArgs e)
