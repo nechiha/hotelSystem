@@ -29,7 +29,6 @@ namespace курсовая
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-            // Устанавливаем английский язык по умолчанию для удобного управления
             ConfigHelper.Instance.SetLang("ru");
             InitializeComponent();
         }
