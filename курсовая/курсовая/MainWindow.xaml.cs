@@ -76,7 +76,7 @@ SELECT TOP (1) e.roleId
 FROM accounts a
 JOIN employees e ON e.employeeId = a.employeeId
 WHERE a.accLogin = N'{login.Replace("'", "''")}'
-  AND a.accPassword = N'{password.Replace("'", "''")}';";
+  AND a.accPassword COLLATE Latin1_General_CS_AS = N'{password.Replace("'", "''")}';";
 
             try
             {
