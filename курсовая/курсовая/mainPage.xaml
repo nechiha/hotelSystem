@@ -72,16 +72,19 @@
 
                         <hc:Card.Footer>
                             <StackPanel Margin="12,10">
-                                <TextBlock Text="номер румы" 
+                                <!-- номер комнаты -->
+                                <TextBlock Text="{Binding roomNumber, StringFormat='№ {0}'}" 
                                            FontSize="16"
                                            Foreground="#e490a5"/>
 
-                                <TextBlock Text="5500" 
+                                <!-- цена -->
+                                <TextBlock Text="{Binding price, StringFormat='{}{0} ₽'}" 
                                            FontSize="18" 
                                            FontWeight="Bold"
                                            Foreground="#db6c88"/>
 
-                                <TextBlock Text="дополнительная хуйня" 
+                                <!-- описание -->
+                                <TextBlock Text="{Binding roomDescription}" 
                                            FontSize="12" 
                                            Foreground="gray"
                                            TextWrapping="Wrap"/>
