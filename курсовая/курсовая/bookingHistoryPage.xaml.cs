@@ -15,21 +15,25 @@ using System.Windows.Shapes;
 
 namespace курсовая
 {
-    /// <summary>
-    /// Логика взаимодействия для bookingHistoryPage.xaml
-    /// </summary>
     public partial class bookingHistoryPage : Page
     {
         public bookingHistoryPage()
         {
             InitializeComponent();
-            RoomsListBox.ItemsSource = new[] { 1, 2, 3, 4, 5 }; // заглушка
-
+            RoomsListBox.ItemsSource = new[] { 1, 2, 3, 4, 5 };
         }
+
         private void Card_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var roomReviewWindow = new roomReviewWindow();
-            roomReviewWindow.Show();
+            if (sender is FrameworkElement element &&
+                element.DataContext is var selectedRoom)
+            {
+                // 🔥 Исправлено: переменная называется "window", а не "roomReviewWindow"
+                var window = new roomReviewWindow(
+                    selectedRoom,
+                    roomReviewWindow.InfoCardMode.RoomOverview);
+                window.ShowDialog();
+            }
         }
     }
 }

@@ -15,14 +15,19 @@ using System.Windows.Shapes;
 
 namespace курсовая
 {
-    /// <summary>
-    /// Логика взаимодействия для RoomOverviewCard.xaml
-    /// </summary>
     public partial class RoomReviewCard : UserControl
     {
         public RoomReviewCard()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Устанавливает данные комнаты для привязки
+        /// </summary>
+        public void SetRoomData(dynamic roomData)
+        {
+            this.DataContext = roomData;
         }
     }
 }

@@ -22,7 +22,6 @@ namespace курсовая
     public partial class mainPage : Page
         
     {
-        hotelSystemEntities1 hotelSystemEntities1 = new hotelSystemEntities1();
         public mainPage()
         {
             InitializeComponent();
@@ -31,7 +30,7 @@ namespace курсовая
 
         private void LoadAvailableRooms()
         {
-            using (var context = new hotelSystemEntities())
+            using (var context = new hotelSystemEntities1())
             {
                 // Загружаем свободные номера + цена из последнего тарифа
                 var rooms = (from r in context.rooms
@@ -48,7 +47,7 @@ namespace курсовая
                                  r.roomImage,
                                  r.roomDescription,
                                  rt.typeName,
-                                 price = rateRoom.price ?? 0, // Если нет тарифа — 0
+                                 price = rateRoom.price,
                                  rateName = rateRoom.rates.rateName ?? "Стандартный тариф"
                              }).ToList();
 

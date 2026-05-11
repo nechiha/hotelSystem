@@ -24,18 +24,21 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Image Source="D:\hotelSystem\курсовая\курсовая\Image\ExampleImage.jpg"
+        <Image x:Name="roomImage" 
+               Source="D:\hotelSystem\курсовая\курсовая\Image\ExampleImage.jpg"
                Stretch="UniformToFill"
                Height="600"
                Margin="15"/>
 
         <StackPanel Grid.Column="1">
-            <TextBlock Text="Номер комнаты"
+            <TextBlock x:Name="roomNumberTB" 
+                       Text="Номер комнаты"
                        FontSize="40"
                        FontWeight="Medium"
                        HorizontalAlignment="Center"
                        Margin="30"/>
-            <TextBlock Text="тип номера"
+            <TextBlock x:Name="roomTypeText" 
+                       Text="тип "
                        HorizontalAlignment="Center"
                        Margin="-20"
                        Foreground="Gray"
@@ -45,20 +48,6 @@
                             Margin="10,0,20,0"/>
 
 
-
-
-
-
-            <!--<TextBlock Text="Описание номера и дополнительных опций, включенных или с возможностью включения в бронь за доп. плату "
-                       TextWrapping="Wrap"
-                       LineHeight="21"
-                       LineStackingStrategy="BlockLineHeight"
-                       TextAlignment="Justify"
-                       FontSize="20"
-                       Margin="10 120 20 0"
-                       HorizontalAlignment="Left"/>-->
-            
-            
         </StackPanel>
 
         <Button x:Name="escapeFromReviewBtn"

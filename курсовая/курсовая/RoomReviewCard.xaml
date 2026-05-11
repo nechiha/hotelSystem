@@ -13,8 +13,8 @@
 
     <Grid>
         <StackPanel Grid.Column="1">
-            
-            <TextBlock Text="Описание номера и дополнительных опций, включенных или с возможностью включения в бронь за доп. плату "
+
+            <TextBlock Text="{Binding roomDescription, FallbackValue='Описание отсутствует'}"
                        TextWrapping="Wrap"
                        LineHeight="25"
                        LineStackingStrategy="BlockLineHeight"
@@ -22,6 +22,8 @@
                        FontSize="20"
                        Margin="10 120 20 0"
                        HorizontalAlignment="Left"/>
+            <!-- ТУДУ: добавить текст
+            опции могут быть внесены в бронь за отдельную плату-->
         </StackPanel>
     </Grid>
 </UserControl>
