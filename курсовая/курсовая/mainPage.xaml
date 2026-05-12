@@ -41,12 +41,12 @@
         <ListBox x:Name="RoomsListBox"
                  Margin="0 150 0 0"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                 d:ItemsSource="{d:SampleData ItemCount=5}"
+                 d:ItemsSource="{d:SampleData}"
                  Style="{DynamicResource ListBoxModernStyle}"
                  BorderThickness="0"
                  BorderBrush="{x:Null}">
 
-            <!-- Располагаем карточки в ряд (как у вас было) -->
+            <!-- Располагаем карточки в ряд -->
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal"
@@ -54,7 +54,7 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
-            <!-- Шаблон одной карточки (полностью ваш дизайн) -->
+            <!-- Шаблон одной карточки -->
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <hc:Card Width="250"
@@ -78,8 +78,7 @@
                                            Foreground="#e490a5"/>
 
                                 <!-- цена -->
-                                <TextBlock Text="{Binding price, StringFormat='{}{0} ₽'}" 
-                                           FontSize="18" 
+                                <TextBlock Text="{Binding price, StringFormat='{}{0:# ##0} ₽'}"                                           FontSize="18" 
                                            FontWeight="Bold"
                                            Foreground="#db6c88"/>
 
