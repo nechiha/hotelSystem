@@ -118,27 +118,15 @@ namespace курсовая
             {
                 case InfoCardMode.RoomOverview:
                     var roomCard = new RoomReviewCard();
-                    roomCard.SetRoomData(_roomData); // 🔥 Передаём данные → сработает Binding roomDescription
+                    roomCard.SetRoomData(_roomData);
                     DynamicContentControl.Content = roomCard;
                     break;
 
                 case InfoCardMode.BookingHistory:
-                    // TODO: Когда создашь BookingHistoryCard
-                    /*
-                    var bookingCard = new BookingHistoryCard();
-                    bookingCard.SetData(_roomData, bookingData);
-                    DynamicContentControl.Content = bookingCard;
-                    */
-
-                    // Временная заглушка
-                    var placeholder = new TextBlock
-                    {
-                        Text = "История бронирования",
-                        FontSize = 16,
-                        Foreground = System.Windows.Media.Brushes.Gray,
-                        Margin = new System.Windows.Thickness(10)
-                    };
-                    DynamicContentControl.Content = placeholder;
+                    // 🔥 Загружаем BookingHistoryCard и передаём данные
+                    var historyCard = new BookingHistoryCard();
+                    historyCard.SetBookingData(_roomData); // _roomData уже содержит всё: GuestName, Dates, Status и т.д.
+                    DynamicContentControl.Content = historyCard;
                     break;
             }
         }

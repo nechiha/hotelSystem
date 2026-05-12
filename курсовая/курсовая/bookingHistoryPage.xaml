@@ -31,12 +31,21 @@
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"
                             hc:InfoElement.Placeholder="Поиск"
-                            FontSize="20"/>
+                            FontSize="20"
+                            TextChanged="searchBookingTB_TextChanged"/>
 
                 <Grid>
-                    <ComboBox Height="50"
+                    <ComboBox x:Name="filtersCB" 
+                              Height="50"
                               VerticalAlignment="Top"
-                              Width="50"/>
+                              Width="50"
+                              SelectionChanged="filterComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Все брони" IsSelected="True" Tag="All"/>
+                        <ComboBoxItem Content="──────────" IsEnabled="False"/>
+                        <ComboBoxItem Content="📅 Текущие" Tag="Status_Current"/>
+                        <ComboBoxItem Content="📅 Прошлые" Tag="Status_Past"/>
+                        <ComboBoxItem Content="❌ Отменённые" Tag="Status_Canceled"/>
+                    </ComboBox>
                     <Image Source="/Icon/filledFilter.png"
                            IsHitTestVisible="False"
                            Width="45"
@@ -45,18 +54,29 @@
                            Margin="0 3 0 0"/>
                 </Grid>
 
+                <!-- Кнопка сброса фильтров -->
+                <Button Content="✕ Сбросить"
+                        Width="120"
+                        Height="50"
+                        Margin="20,0,0,0"
+                        VerticalAlignment="Top"
+                        Click="ResetFilters_Click"
+                        FontSize="14"
+                        Background="#f0f0f0"
+                        BorderThickness="0"/>
+
             </StackPanel>
 
 
             <ListBox x:Name="RoomsListBox"
                      Margin="0 50 0 0"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                     d:ItemsSource="{d:SampleData ItemCount=5}"
+                     d:ItemsSource="{d:SampleData}"
                      Style="{DynamicResource ListBoxModernStyle}"
                      BorderThickness="0"
                      BorderBrush="{x:Null}">
 
-                <!-- Располагаем карточки в ряд (как у вас было) -->
+                <!-- Располагаем карточки в ряд -->
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal"
@@ -64,7 +84,7 @@
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
-                <!-- Шаблон одной карточки (полностью ваш дизайн) -->
+                <!-- Шаблон одной карточки -->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <hc:Card Width="250"
@@ -77,24 +97,36 @@
                              Cursor="Hand"
                              MouseLeftButtonDown="Card_MouseLeftButtonDown">
 
-                            <Image Stretch="UniformToFill"
-                               Margin="2"/>
+                            <Image 
+                                   Stretch="UniformToFill"
+                                   Margin="2"/>
 
                             <hc:Card.Footer>
                                 <StackPanel Margin="12,10">
-                                    <TextBlock Text="номер румы" 
-                                           FontSize="16"
-                                           Foreground="#e490a5"/>
+                                    <!-- Номер комнаты -->
+                                    <TextBlock Text="{Binding RoomNumber, StringFormat='№ {0}'}" 
+                                               FontSize="16"
+                                               Foreground="#e490a5"/>
 
-                                    <TextBlock Text="5500" 
-                                           FontSize="18" 
-                                           FontWeight="Bold"
-                                           Foreground="#db6c88"/>
+                                    <!-- ФИО клиента -->
+                                    <TextBlock Text="{Binding GuestName}" 
+                                               FontSize="13"
+                                               Foreground="Gray"
+                                               Margin="0,2,0,5"/>
 
-                                    <TextBlock Text="дополнительная хуйня" 
-                                           FontSize="12" 
-                                           Foreground="gray"
-                                           TextWrapping="Wrap"/>
+                                    <!-- Даты заезда и выезда -->
+                                    <TextBlock FontSize="12" 
+                                               Foreground="#666"
+                                               Text="{Binding ArrivingDate, StringFormat='{}{0:dd.MM}'}"/>
+                                        <TextBlock FontSize="12" 
+                                               Foreground="#666"
+                                               Text="{Binding DepartureDate, StringFormat='{}{0:dd.MM}'}"/>
+
+                                    <!-- Статус бронирования -->
+                                    <TextBlock Text="{Binding BookingStatusName}" 
+                                           FontSize="11" 
+                                           Foreground="{Binding BookingStatusId}"
+                                           Margin="0,5,0,0"/>
                                 </StackPanel>
                             </hc:Card.Footer>
                         </hc:Card>
