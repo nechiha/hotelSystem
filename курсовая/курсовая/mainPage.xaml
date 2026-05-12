@@ -11,7 +11,7 @@
       FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
 
     <Grid>
-        <!-- Верхняя панель с поиском и фильтром (оставил как было) -->
+        <!-- Верхняя панель с поиском и фильтром -->
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center">
 
@@ -22,12 +22,36 @@
                         VerticalAlignment="Top"
                         HorizontalAlignment="Left"
                         hc:InfoElement.Placeholder="Поиск"
-                        FontSize="20"/>
+                        FontSize="20"
+                        TextChanged="mainSearchTB_TextChanged"/>
             <Grid>
-                <ComboBox Height="50"
+                <ComboBox x:Name="filtersCB" 
+                          Height="50"
                           VerticalAlignment="Top"
                           Margin="0 30 0 0"
-                          Width="50"/>
+                          Width="50"
+                          SelectionChanged="filterComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Все номера" IsSelected="True" Tag="All"/>
+                    <ComboBoxItem Content="──────────" IsEnabled="False"/>
+                    <ComboBoxItem Content="🏠 По типу номера" IsEnabled="False"/>
+                    <ComboBoxItem Content="Одноместный" Tag="Type_1"/>
+                    <ComboBoxItem Content="Двуместный" Tag="Type_2"/>
+                    <ComboBoxItem Content="Трехместный" Tag="Type_3"/>
+                    <ComboBoxItem Content="Четырехместный" Tag="Type_4"/>
+                    <ComboBoxItem Content="──────────" IsEnabled="False"/>
+                    <ComboBoxItem Content="🏢 По этажу" IsEnabled="False"/>
+                    <ComboBoxItem Content="1 этаж" Tag="Floor_1"/>
+                    <ComboBoxItem Content="2 этаж" Tag="Floor_2"/>
+                    <ComboBoxItem Content="3 этаж" Tag="Floor_3"/>
+                    <ComboBoxItem Content="4 этаж" Tag="Floor_4"/>
+                    <ComboBoxItem Content="5 этаж" Tag="Floor_5"/>
+                    <ComboBoxItem Content="──────────" IsEnabled="False"/>
+                    <ComboBoxItem Content="💰 По цене" IsEnabled="False"/>
+                    <ComboBoxItem Content="До 3000 ₽" Tag="Price_0_3000"/>
+                    <ComboBoxItem Content="3000 - 5000 ₽" Tag="Price_3000_5000"/>
+                    <ComboBoxItem Content="5000 - 10000 ₽" Tag="Price_5000_10000"/>
+                    <ComboBoxItem Content="От 10000 ₽" Tag="Price_10000_999999"/>
+                </ComboBox>
                 <Image Source="/Icon/filledFilter.png"
                        IsHitTestVisible="False"
                        Width="45"
@@ -35,6 +59,15 @@
                        VerticalAlignment="Top"
                        Margin="0 34 0 0"/>
             </Grid>
+            <Button x:Name="resetFiltersBtn" 
+                    Content="✕ Сбросить"
+                    hc:BorderElement.CornerRadius="5"
+                    Width="120"
+                    Height="50"
+                    Margin="20,30,0,0"
+                    VerticalAlignment="Top"
+                    Click="resetFiltersBtn_Click"
+                    FontSize="18"/>
         </StackPanel>
 
         <!-- ListBox с карточками номеров -->
