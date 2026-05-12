@@ -66,14 +66,17 @@
                                Style="{StaticResource DateTimePickerExtend}"
                                FontSize="15"
                                VerticalAlignment="Center"
-                               Margin="5"/>
+                               Margin="5"
+                               SelectedDateTimeChanged="arriveDatePick_SelectedDateTimeChanged"/>
+
             <hc:DateTimePicker x:Name="departureDatePick"
                                Width="300"                         
                                hc:InfoElement.Title="Выезд"
                                Style="{StaticResource DateTimePickerExtend}"
                                FontSize="15"
                                VerticalAlignment="Center"
-                               Margin="5"/>
+                               Margin="5"
+                               SelectedDateTimeChanged="departureDatePick_SelectedDateTimeChanged"/>
             <StackPanel Orientation="Horizontal"
                         Margin="30">
                 
@@ -81,14 +84,16 @@
                            FontSize="15"
                            FontWeight="Medium"/>
                 <!--во втором текстблоке биндинг-->
-                <TextBlock Text="binding"
+                <TextBlock x:Name="totalPriceText" 
+                           Text="0.00 ₽"
                            FontSize="15"
                            FontWeight="Medium"/>
             </StackPanel>
             
         </StackPanel>
 
-        <StackPanel Grid.Row="1"
+        <StackPanel x:Name="optionsPanel" 
+                    Grid.Row="1"
                     Grid.Column="1"
                     Margin="50">
 

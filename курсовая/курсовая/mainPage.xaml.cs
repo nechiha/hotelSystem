@@ -124,9 +124,14 @@ namespace курсовая
         {
             if (sender is FrameworkElement element && element.DataContext != null)
             {
-                dynamic selectedRoom = element.DataContext;
-                var roomReviewWindow = new roomReviewWindow(selectedRoom);
-                roomReviewWindow.ShowDialog();
+                dynamic room = element.DataContext;
+
+                var bookingWindow = new bookingWindow
+                {
+                    SelectedRoomId = room.roomId,      // 🔥 Передаём ID комнаты
+                    RoomPrice = room.price             // 🔥 Передаём цену
+                };
+                bookingWindow.ShowDialog();
             }
         }
     }

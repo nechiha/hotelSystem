@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace курсовая
 {
-    /// <summary>
-    /// Логика взаимодействия для roomReviewWindow.xaml
-    /// </summary>
     public partial class roomReviewWindow : Window
     {
         private readonly dynamic _roomData;
@@ -24,123 +21,71 @@ namespace курсовая
 
         public enum InfoCardMode
         {
-            RoomOverview,      // Просмотр номера (перед бронированием)
-            BookingHistory     // История бронирования (будущее)
+            RoomOverview,
+            BookingHistory
         }
 
-        /// <summary>
-        /// Основной конструктор — для просмотра номера
-        /// </summary>
+        // 🔥 ОДИН конструктор на все случаи
         public roomReviewWindow(dynamic roomData, InfoCardMode mode = InfoCardMode.RoomOverview)
         {
             InitializeComponent();
-
             _roomData = roomData;
             _currentMode = mode;
-
             LoadRoomData();
             LoadUserControl();
         }
 
-        /// <summary>
-        /// Конструктор для истории бронирования (будущий)
-        /// </summary>
-        public roomReviewWindow(dynamic roomData, dynamic bookingData)
-        {
-            InitializeComponent();
-
-            _roomData = roomData;
-            _currentMode = InfoCardMode.BookingHistory;
-
-            LoadRoomData();
-            LoadUserControl(bookingData);
-        }
-
-        /// <summary>
-        /// Заполняет поля окна данными из БД
-        /// </summary>
         private void LoadRoomData()
         {
-            // Заголовок окна
             this.Title = _currentMode == InfoCardMode.RoomOverview
-                ? $"Номер {_roomData.roomNumber}"
+                ? $"Номер {_roomData.roomNumber}"      // 🔥 маленькая r
                 : $"Бронирование: номер {_roomData.roomNumber}";
 
-            // 🔥 Используем ТОЛЬКО те x:Name, что есть в твоем XAML:
-            roomNumberTB.Text = $"№ {_roomData.roomNumber}";
-            roomTypeText.Text = _roomData.typeName?.ToString() ?? "Тип не указан";
+            roomNumberTB.Text = $"№ {_roomData.roomNumber}";  // 🔥 маленькая r
+            roomTypeText.Text = _roomData.typeName?.ToString() ?? "Тип не указан";  // 🔥 маленькая t
 
-            // Загружаем изображение в roomImage (твой x:Name)
             LoadRoomImage();
-
-            // Показываем кнопку "Забронировать" только в режиме RoomOverview
             toBookBtn.Visibility = _currentMode == InfoCardMode.RoomOverview
-                ? Visibility.Visible
-                : Visibility.Hidden; // 🔥 Hidden, как в твоем XAML
+                ? Visibility.Visible : Visibility.Hidden;
         }
 
-        /// <summary>
-        /// Загружает изображение с обработкой ошибок
-        /// </summary>
         private void LoadRoomImage()
         {
-            if (string.IsNullOrEmpty(_roomData.roomImage))
+            if (string.IsNullOrEmpty(_roomData.roomImage))  // 🔥 маленькая r
             {
-                roomImage.Source = new BitmapImage(
-                    new Uri("/Icon/placeholder.png", UriKind.Relative));
+                roomImage.Source = new BitmapImage(new Uri("/Icon/placeholder.png", UriKind.Relative));
                 return;
             }
-
             try
             {
-                string path = _roomData.roomImage;
+                string path = _roomData.roomImage;  // 🔥 маленькая r
                 if (!path.StartsWith("/") && !path.StartsWith("pack://"))
-                {
                     path = "/" + path;
-                }
-
-                roomImage.Source = new BitmapImage(
-                    new Uri(path, UriKind.RelativeOrAbsolute));
+                roomImage.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
             }
             catch
             {
-                roomImage.Source = new BitmapImage(
-                    new Uri("/Icon/placeholder.png", UriKind.Relative));
+                roomImage.Source = new BitmapImage(new Uri("/Icon/placeholder.png", UriKind.Relative));
             }
         }
 
-        /// <summary>
-        /// Загружает UserControl в DynamicContentControl
-        /// </summary>
-        private void LoadUserControl(dynamic bookingData = null)
+        private void LoadUserControl()
         {
-            switch (_currentMode)
+            if (_currentMode == InfoCardMode.RoomOverview)
             {
-                case InfoCardMode.RoomOverview:
-                    var roomCard = new RoomReviewCard();
-                    roomCard.SetRoomData(_roomData);
-                    DynamicContentControl.Content = roomCard;
-                    break;
-
-                case InfoCardMode.BookingHistory:
-                    // 🔥 Загружаем BookingHistoryCard и передаём данные
-                    var historyCard = new BookingHistoryCard();
-                    historyCard.SetBookingData(_roomData); // _roomData уже содержит всё: GuestName, Dates, Status и т.д.
-                    DynamicContentControl.Content = historyCard;
-                    break;
+                var roomCard = new RoomReviewCard();
+                roomCard.SetRoomData(_roomData);
+                DynamicContentControl.Content = roomCard;
+            }
+            else // BookingHistory
+            {
+                var historyCard = new BookingHistoryCard();
+                historyCard.SetBookingData(_roomData);  // 🔥 Передаём тот же _roomData
+                DynamicContentControl.Content = historyCard;
             }
         }
 
-        private void escapeFromReviewBtn_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void toBookBtn_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Передай roomId в bookingWindow, если нужно
-            var bookingWindow = new bookingWindow();
-            bookingWindow.Show();
-        }
+        private void escapeFromReviewBtn_Click(object sender, RoutedEventArgs e) => this.Close();
+        private void toBookBtn_Click(object sender, RoutedEventArgs e) => new bookingWindow().Show();
     }
 }

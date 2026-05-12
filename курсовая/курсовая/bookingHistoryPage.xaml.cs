@@ -52,18 +52,22 @@ namespace курсовая
                 // 🔥 ШАГ 2: Формируем итоговый список с ИМЕНАМИ свойств как в твоем XAML
                 var bookings = rawData.Select(item => new
                 {
-                    RoomNumber = item.roomNumber,
-                    RoomImage = item.roomImage,
-                    // 🔥 GuestName — именно так ждёт твой XAML
-                    GuestName = $"{item.clientSurname} {item.clientName} {item.clientPatronomyc}".Trim(),
-                    // 🔥 ArrivingDate / DepartureDate — именно так в привязках
-                    ArrivingDate = item.arrivingDate,
-                    DepartureDate = item.departureDate,
-                    BookingStatusName = item.bookingStatusName,
-                    BookingStatusId = item.bookingStatusId,
-                    // Дополнительно (если понадобится)
-                    RoomId = item.roomId,
-                    BookingId = item.bookingId
+                    roomNumber = item.roomNumber,        // 🔥 маленькая r
+                    roomImage = item.roomImage,          // 🔥 маленькая r
+                    typeName = item.typeName,            // 🔥 маленькая t
+                    guestName = $"{item.clientSurname} {item.clientName} {item.clientPatronomyc}".Trim(),
+                    arrivingDate = item.arrivingDate,
+                    departureDate = item.departureDate,
+                    bookingStatusName = item.bookingStatusName,
+                    bookingStatusId = item.bookingStatusId,
+                    roomId = item.roomId,
+                    bookingId = item.bookingId,
+                    daysSpent = (item.departureDate - item.arrivingDate).Days,
+                    extraOptions = string.Join(", ",
+                                                from bo in context.bookingOptions
+                                                join o in context.options on bo.optionId equals o.optionId
+                                                where bo.bookingId == item.bookingId
+                                                select o.optionName)
                 }).ToList();
 
                 _bookingsView = CollectionViewSource.GetDefaultView(bookings);
@@ -82,17 +86,17 @@ namespace курсовая
             // Поиск по номеру или ФИО
             if (!string.IsNullOrEmpty(searchText))
             {
-                bool matches = booking.RoomNumber.ToString().Contains(searchText) ||
-                    booking.GuestName.ToLower().Contains(searchText);
+                bool matches = booking.roomNumber.ToString().Contains(searchText) ||
+                    booking.guestName.ToLower().Contains(searchText);
                 if (!matches) return false;
             }
 
             // Фильтры
-            if (filterTag == "Status_Current" && (booking.BookingStatusId != 1 || booking.DepartureDate.Date < DateTime.Today))
+            if (filterTag == "Status_Current" && (booking.bookingStatusId != 1 || booking.departureDate.Date < DateTime.Today))
                 return false;
-            if (filterTag == "Status_Past" && booking.DepartureDate.Date >= DateTime.Today)
+            if (filterTag == "Status_Past" && booking.departureDate.Date >= DateTime.Today)
                 return false;
-            if (filterTag == "Status_Canceled" && booking.BookingStatusId != 2)
+            if (filterTag == "Status_Canceled" && booking.bookingStatusId != 2)
                 return false;
 
             return true;

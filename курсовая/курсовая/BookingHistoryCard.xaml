@@ -10,44 +10,51 @@
              d:DesignHeight="1080" d:DesignWidth="1920"
              FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
     <Grid>
-        <TextBlock Grid.Row="0" 
-                   Grid.Column="0" 
+        <StackPanel>
+
+            <TextBlock FontSize="19"
                    Text="Кем:" 
                    FontWeight="Bold"
                    Margin="0,0,10,5"/>
-        <TextBlock Grid.Row="0" 
-                   Grid.Column="1" 
-                   Text="{Binding GuestName}"
-                   Margin="0,0,0,5"/>
+            <TextBlock x:Name="guestNameTB"
+                   FontSize="20"
+                   Text="{Binding guestName}"                  
+                   Margin="10"/>
 
-        <TextBlock Grid.Row="1" 
-                   Grid.Column="0" Text="Забронировано:" 
-                   FontWeight="Bold" Margin="0,0,10,5"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" 
-                   Text="{Binding BookingDate}"
-                   Margin="0,0,0,5"/>
+        <TextBlock FontSize="19"
+                   Text="Забронировано:" 
+                   FontWeight="Bold" 
+                   Margin="0,0,10,5"/>
+        <TextBlock x:Name="bookingDateTB"
+                   FontSize="19"
+                   Text="{Binding arrivingDate}"
+                   Margin="10"/>
 
-        <TextBlock Grid.Row="2" 
-                   Grid.Column="0" 
+        <TextBlock FontSize="19"
                    Text="Проведено дней:" 
                    FontWeight="Bold"
                    Margin="0,0,10,5"/>
-        <TextBlock Grid.Row="2" 
-                   Grid.Column="1" 
-                   Text="{Binding DaysSpent}"
-                   Margin="0,0,0,5"/>
+        <TextBlock x:Name="daysSpentTB"
+                   FontSize="19"
+                   Text="{Binding daysSpent}"
+                   Margin="10"/>
 
-        <TextBlock Grid.Row="3" 
-                   Grid.Column="0" 
+        <TextBlock FontSize="19"
                    Text="Доп. опции:" 
                    FontWeight="Bold" 
                    Margin="0,0,10,5"/>
-        <TextBlock Grid.Row="3" 
-                   Grid.Column="1" 
-                   Text="{Binding ExtraOptions}"
-                   TextWrapping="Wrap"/>
+        <TextBlock x:Name="extraOptionsTB"
+                   FontSize="19"
+                   Text="{Binding extraOptions}"
+                   TextWrapping="Wrap"
+                   Margin="10"/>
 
         <Button x:Name="deleteBookingBtn"
-                Content="Отменить"/>
+                Content="Отменить"
+                Height="40"
+                Width="150"
+                FontSize="19"/>      
+        </StackPanel>
+
     </Grid>
 </UserControl>

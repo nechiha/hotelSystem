@@ -104,12 +104,12 @@
                             <hc:Card.Footer>
                                 <StackPanel Margin="12,10">
                                     <!-- Номер комнаты -->
-                                    <TextBlock Text="{Binding RoomNumber, StringFormat='№ {0}'}" 
+                                    <TextBlock Text="{Binding roomNumber, StringFormat='№ {0}'}" 
                                                FontSize="16"
                                                Foreground="#e490a5"/>
 
                                     <!-- ФИО клиента -->
-                                    <TextBlock Text="{Binding GuestName}" 
+                                    <TextBlock Text="{Binding guestName}" 
                                                FontSize="13"
                                                Foreground="Gray"
                                                Margin="0,2,0,5"/>
@@ -117,15 +117,15 @@
                                     <!-- Даты заезда и выезда -->
                                     <TextBlock FontSize="12" 
                                                Foreground="#666"
-                                               Text="{Binding ArrivingDate, StringFormat='{}{0:dd.MM}'}"/>
+                                               Text="{Binding arrivingDate, StringFormat='{}{0:dd.MM}'}"/>
                                         <TextBlock FontSize="12" 
                                                Foreground="#666"
-                                               Text="{Binding DepartureDate, StringFormat='{}{0:dd.MM}'}"/>
+                                               Text="{Binding departureDate, StringFormat='{}{0:dd.MM}'}"/>
 
                                     <!-- Статус бронирования -->
-                                    <TextBlock Text="{Binding BookingStatusName}" 
+                                    <TextBlock Text="{Binding bookingStatusName}" 
                                            FontSize="11" 
-                                           Foreground="{Binding BookingStatusId}"
+                                           Foreground="{Binding bookingStatusId}"
                                            Margin="0,5,0,0"/>
                                 </StackPanel>
                             </hc:Card.Footer>
