@@ -86,6 +86,18 @@ namespace курсовая
         }
 
         private void escapeFromReviewBtn_Click(object sender, RoutedEventArgs e) => this.Close();
-        private void toBookBtn_Click(object sender, RoutedEventArgs e) => new bookingWindow().Show();
+        private void toBookBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //  Берём данные из _roomData, который уже есть в этом окне
+            int roomId = _roomData.roomId;      // или RoomId, если у тебя с большой буквы
+            double price = _roomData.price;     // или Price, если с большой
+
+            var bookingWindow = new bookingWindow
+            {
+                SelectedRoomId = roomId,
+                RoomPrice = price
+            };
+            bookingWindow.ShowDialog();
+        }
     }
 }

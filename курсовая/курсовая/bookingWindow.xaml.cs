@@ -27,7 +27,12 @@ namespace курсовая
         {
             InitializeComponent();
             LoadComboBoxes();
+
+            // 🔥 Подписываемся на события изменения дат
+            arriveDatePick.SelectedDateTimeChanged += (s, e) => UpdateTotalPrice();
+            departureDatePick.SelectedDateTimeChanged += (s, e) => UpdateTotalPrice();
         }
+
 
         /// <summary>
         /// Загружает данные в комбобоксы
@@ -63,7 +68,14 @@ namespace курсовая
 
             var selectedOption = insertOptionCB.SelectedItem as options;
 
-            // 🔥 Создаём новый ComboBox
+            // 🔥 Пропускаем "Нет" (optionId = 1)
+            if (selectedOption.optionId == 1)
+            {
+                MessageBox.Show("Опция 'Нет' не добавляется", "Внимание",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             var newCombo = new ComboBox
             {
                 Width = 300,
@@ -73,26 +85,22 @@ namespace курсовая
                 ItemsSource = insertOptionCB.ItemsSource,
                 DisplayMemberPath = "optionName",
                 SelectedValuePath = "optionId",
-                Tag = "dynamicOption" // 🔥 Метка, чтобы отличать от первого
+                Tag = "dynamicOption"
             };
             newCombo.SelectedValue = selectedOption.optionId;
 
-            // 🔥 Добавляем в список и в StackPanel
-            _addedOptions.Add((newCombo, selectedOption.optionId));
-
-            // Находим StackPanel с опциями и добавляем туда ComboBox
             var optionsPanel = FindVisualChild<StackPanel>(this, "optionsPanel");
             if (optionsPanel != null)
                 optionsPanel.Children.Add(newCombo);
 
-            // 🔥 Сдвигаем кнопку "+" вниз
+            _addedOptions.Add((newCombo, selectedOption.optionId));
+
             var margin = addOptionBtn.Margin;
             addOptionBtn.Margin = new Thickness(margin.Left, margin.Top + 40, margin.Right, margin.Bottom);
 
-            // 🔥 Обновляем общую стоимость
+            // 🔥 Обновляем цену
             UpdateTotalPrice();
 
-            // 🔥 Сбрасываем первый комбобокс для следующего выбора
             insertOptionCB.SelectedIndex = -1;
         }
 
@@ -102,17 +110,29 @@ namespace курсовая
         private void UpdateTotalPrice()
         {
             if (!arriveDatePick.SelectedDateTime.HasValue || !departureDatePick.SelectedDateTime.HasValue)
+            {
+                if (totalPriceText != null)
+                    totalPriceText.Text = "0.00 ₽";
                 return;
+            }
 
             int days = (departureDatePick.SelectedDateTime.Value.Date - arriveDatePick.SelectedDateTime.Value.Date).Days;
-            if (days <= 0) return;
+            if (days <= 0)
+            {
+                if (totalPriceText != null)
+                    totalPriceText.Text = "0.00 ₽";
+                return;
+            }
 
             double roomTotal = RoomPrice * days;
             double optionsTotal = 0;
 
-            // Считаем стоимость добавленных опций
+            // Считаем стоимость добавленных опций (ПРОПУСКАЕМ optionId = 1)
             foreach (var item in _addedOptions)
             {
+                if (item.optionId == 1) // Пропускаем "Нет"
+                    continue;
+
                 using (var context = new hotelSystemEntities1())
                 {
                     var option = context.options.Find(item.optionId);
@@ -121,10 +141,9 @@ namespace курсовая
                 }
             }
 
-            // 🔥 Находим TextBlock с ценой и обновляем
-            var priceTextBlock = FindVisualChild<TextBlock>(this, "totalPriceText");
-            if (priceTextBlock != null)
-                priceTextBlock.Text = $"{roomTotal + optionsTotal:0.00} ₽";
+            // 🔥 Обновляем цену
+            if (totalPriceText != null)
+                totalPriceText.Text = $"{roomTotal + optionsTotal:0.00} ₽";
         }
 
         /// <summary>
@@ -171,7 +190,7 @@ namespace курсовая
                             clientPatronomyc = insertPatronomyc.Text
                         };
                         context.clients.Add(client);
-                        context.SaveChanges(); // 🔥 Сохраняем, чтобы получить clientId
+                        context.SaveChanges();
                     }
 
                     // 🔥 2. Создаём бронь
@@ -179,11 +198,11 @@ namespace курсовая
                     {
                         clientId = client.clientId,
                         amountOfPeople = peopleAmountCB.SelectedIndex + 1,
-                        bookingStatusId = 1, // 🔥 Подтверждено
+                        bookingStatusId = 1, // Подтверждено
                     };
 
                     context.bookings.Add(booking);
-                    context.SaveChanges(); // 🔥 Сохраняем, чтобы получить bookingId
+                    context.SaveChanges();
 
                     // 🔥 3. Создаём связь номер-бронь
                     var bookingRoom = new bookingRooms
@@ -195,20 +214,50 @@ namespace курсовая
                     };
                     context.bookingRooms.Add(bookingRoom);
 
-                    // 🔥 4. Добавляем выбранные опции
+                    // 🔥 4. Добавляем опции (ПРОПУСКАЕМ optionId = 1)
+                    double optionsTotal = 0;
                     foreach (var item in _addedOptions)
                     {
-                        var bookingOption = new bookingOptions
+                        // 🔥 Пропускаем "Нет" (optionId = 1)
+                        if (item.optionId == 1)
+                            continue;
+
+                        var option = context.options.Find(item.optionId);
+                        if (option != null)
                         {
-                            bookingId = booking.bookingId,
-                            optionId = item.optionId
-                        };
-                        context.bookingOptions.Add(bookingOption);
+                            optionsTotal += option.price;
+
+                            var bookingOption = new bookingOptions
+                            {
+                                bookingId = booking.bookingId,
+                                optionId = item.optionId
+                            };
+                            context.bookingOptions.Add(bookingOption);
+                        }
                     }
 
-                    context.SaveChanges(); // 🔥 Финальное сохранение
+                    // 🔥 5. Считаем общую стоимость
+                    double roomTotal = RoomPrice * days;
+                    double totalPrice = roomTotal + optionsTotal;
 
-                    MessageBox.Show("Бронирование успешно создано!", "Успех",
+                    // 🔥 6. СОЗДАЁМ СЧЁТ В ТАБЛИЦЕ bills
+                    var bill = new bills
+                    {
+                        bookingId = booking.bookingId,
+                        total = totalPrice
+                    };
+                    context.bills.Add(bill);
+
+                    // 🔥 7. Обновляем статус комнаты
+                    var room = context.rooms.Find(SelectedRoomId);
+                    if (room != null)
+                    {
+                        room.roomStatusId = 2; // занята
+                    }
+
+                    context.SaveChanges();
+
+                    MessageBox.Show($"Бронирование успешно создано!\nСчёт на сумму: {totalPrice:0.00} ₽", "Успех",
                         MessageBoxButton.OK, MessageBoxImage.Information);
 
                     this.Close();
