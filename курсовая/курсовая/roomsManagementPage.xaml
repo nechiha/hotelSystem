@@ -13,11 +13,6 @@
 
     <Grid>
 
-
-
-        
-        
-
             <StackPanel Orientation="Vertical">
                 
                 <TextBlock Text="Управление номерами"

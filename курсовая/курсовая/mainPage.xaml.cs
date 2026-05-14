@@ -25,12 +25,31 @@ namespace курсовая
         {
             using (var context = new hotelSystemEntities1())
             {
+                // 🔥 Автоматически освобождаем номера, где дата выезда прошла
+                var expiredBookings = context.bookingRooms
+                    .Where(br => br.departureDate < DateTime.Today &&
+                                 br.bookings.bookingStatusId == 1)
+                    .ToList();
+
+                foreach (var booking in expiredBookings)
+                {
+                    var room = context.rooms.Find(booking.roomId);
+                    if (room != null && room.roomStatusId == 2)
+                    {
+                        room.roomStatusId = 1; // Освобождаем
+                    }
+                }
+                context.SaveChanges();
                 var rooms = (from r in context.rooms
                              join rt in context.roomTypes on r.typeId equals rt.typeId
                              join rs in context.roomStatuses on r.roomStatusId equals rs.roomStatusId
                              join rateRoom in context.rateForRoomTypes on r.typeId equals rateRoom.typeId into rateGroup
                              from rateRoom in rateGroup.DefaultIfEmpty()
-                             where r.roomStatusId == 1
+                             where r.roomStatusId == 1 ||
+                           (r.roomStatusId == 2 &&
+                            !context.bookingRooms.Any(br => br.roomId == r.roomId &&
+                                                           br.departureDate >= DateTime.Today &&
+                                                           br.bookings.bookingStatusId == 1))
                              select new
                              {
                                  r.roomId,
