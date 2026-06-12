@@ -61,6 +61,7 @@
             </Grid>
             <Button x:Name="resetFiltersBtn" 
                     Content="✕ Сбросить"
+                    ToolTip="Сбросить все фильтры"
                     hc:BorderElement.CornerRadius="5"
                     Width="120"
                     Height="50"

@@ -52,6 +52,7 @@
 
         <Button x:Name="escapeFromReviewBtn"
                 Content="Назад"
+                ToolTip="Вернуться назад"
                 Grid.Row="1"
                 FontSize="17"
                 Width="140"

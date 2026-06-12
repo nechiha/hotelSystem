@@ -35,16 +35,17 @@
                             TextChanged="searchBookingTB_TextChanged"/>
 
                 <Grid>
-                    <ComboBox x:Name="filtersCB" 
+                    <ComboBox x:Name="filtersCB"
                               Height="50"
                               VerticalAlignment="Top"
                               Width="50"
                               SelectionChanged="filterComboBox_SelectionChanged">
-                        <ComboBoxItem Content="Все брони" IsSelected="True" Tag="All"/>
+                        <ComboBoxItem Content="Все брони" IsSelected="True" Tag="All" />
                         <ComboBoxItem Content="──────────" IsEnabled="False"/>
-                        <ComboBoxItem Content="📅 Текущие" Tag="Status_Current"/>
-                        <ComboBoxItem Content="📅 Прошлые" Tag="Status_Past"/>
-                        <ComboBoxItem Content="❌ Отменённые" Tag="Status_Canceled"/>
+                        <ComboBoxItem Content="📅 Предстоящие" Tag="Upcoming"/>
+                        <ComboBoxItem Content="🏠 Текущие" Tag="Current"/>
+                        <ComboBoxItem Content="✅ Завершённые" Tag="Completed"/>
+                        <ComboBoxItem Content="❌ Отменённые" Tag="Canceled"/>
                     </ComboBox>
                     <Image Source="/Icon/filledFilter.png"
                            IsHitTestVisible="False"
@@ -56,6 +57,7 @@
 
                 <!-- Кнопка сброса фильтров -->
                 <Button Content="✕ Сбросить"
+                        ToolTip="Сбросить все фильтры"
                         Width="120"
                         Height="50"
                         Margin="20,0,0,0"
@@ -80,7 +82,7 @@
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal"
-                               HorizontalAlignment="Left" Cursor=""/>
+                                   HorizontalAlignment="Left" Cursor=""/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
@@ -88,14 +90,14 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <hc:Card Width="250"
-                             Height="260"
-                             BorderThickness="0"
-                             Margin="15"
-                             Padding="10"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             Cursor="Hand"
-                             MouseLeftButtonDown="Card_MouseLeftButtonDown">
+                                 Height="260"
+                                 BorderThickness="0"
+                                 Margin="15"
+                                 Padding="10"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Cursor="Hand"
+                                 MouseLeftButtonDown="Card_MouseLeftButtonDown">
 
                             <Image 
                                    Stretch="UniformToFill"
@@ -119,14 +121,15 @@
                                                Foreground="#666"
                                                Text="{Binding arrivingDate, StringFormat='{}{0:dd.MM}'}"/>
                                         <TextBlock FontSize="12" 
-                                               Foreground="#666"
-                                               Text="{Binding departureDate, StringFormat='{}{0:dd.MM}'}"/>
+                                                   Foreground="#666"
+                                                   Text="{Binding departureDate, StringFormat='{}{0:dd.MM}'}"/>
 
                                     <!-- Статус бронирования -->
-                                    <TextBlock Text="{Binding bookingStatusName}" 
-                                           FontSize="11" 
-                                           Foreground="{Binding bookingStatusId}"
-                                           Margin="0,5,0,0"/>
+                                   <TextBlock Text="{Binding displayStatus}"
+                                              FontSize="13"
+                                              FontWeight="Bold"
+                                              Foreground="{Binding statusColor}"
+                                              Margin="0,5,0,0"/>
                                 </StackPanel>
                             </hc:Card.Footer>
                         </hc:Card>

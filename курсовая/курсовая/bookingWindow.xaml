@@ -30,7 +30,7 @@
                    Grid.ColumnSpan="2"/>
 
         <StackPanel Grid.Row="1"
-                    Margin="35">
+                    Margin="25">
 
             <TextBox x:Name="insertSurname"
                      Width="300"
@@ -99,7 +99,7 @@
                                Margin="5"
                                SelectedDateTimeChanged="departureDatePick_SelectedDateTimeChanged"/>
             <StackPanel Orientation="Horizontal"
-                        Margin="30">
+                        Margin="20">
                 
                 <TextBlock Text="Общая стоимость: "
                            FontSize="15"
@@ -116,7 +116,7 @@
         <StackPanel x:Name="optionsPanel"
             Grid.Row="1"
             Grid.Column="1"
-            Margin="50">
+            Margin="25">
 
             <!-- Выбор опции + кнопка добавления -->
             <StackPanel Orientation="Horizontal">

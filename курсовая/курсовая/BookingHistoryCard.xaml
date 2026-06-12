@@ -13,27 +13,36 @@
         <StackPanel>
 
             <TextBlock FontSize="19"
-                   Text="Кем:" 
-                   FontWeight="Bold"
-                   Margin="0,0,10,5"/>
+                       Text="Кем:" 
+                       FontWeight="Bold"
+                       Margin="0,0,10,5"/>
             <TextBlock x:Name="guestNameTB"
-                   FontSize="20"
-                   Text="{Binding guestName}"                  
-                   Margin="10"/>
+                       FontSize="20"
+                       Text="{Binding guestName}"                  
+                       Margin="10"/>
 
-        <TextBlock FontSize="19"
-                   Text="Забронировано:" 
-                   FontWeight="Bold" 
-                   Margin="0,0,10,5"/>
-        <TextBlock x:Name="bookingDateTB"
-                   FontSize="19"
-                   Text="{Binding arrivingDate}"
-                   Margin="10"/>
+            <TextBlock FontSize="19"
+                       Text="Дата заезда:"
+                       FontWeight="Bold"
+                       Margin="0,0,10,5"/>
+            <TextBlock x:Name="arrivingDateTB"
+                       FontSize="19"
+                       Text="{Binding arrivingDate, StringFormat='dd.MM.yyyy'}"
+                       Margin="10"/>
 
-        <TextBlock FontSize="19"
-                   Text="Проведено дней:" 
-                   FontWeight="Bold"
-                   Margin="0,0,10,5"/>
+            <TextBlock FontSize="19"
+                       Text="Дата выезда:"
+                       FontWeight="Bold"
+                       Margin="0,0,10,5"/>
+            <TextBlock x:Name="departureDateTB"
+                       FontSize="19"
+                       Text="{Binding departureDate, StringFormat='dd.MM.yyyy'}"
+                       Margin="10"/>
+
+            <TextBlock FontSize="19"
+                       Text="Проведено дней:" 
+                       FontWeight="Bold"
+                       Margin="0,0,10,5"/>
         <TextBlock x:Name="daysSpentTB"
                    FontSize="19"
                    Text="{Binding daysSpent}"
@@ -53,7 +62,8 @@
                 Content="Отменить"
                 Height="40"
                 Width="150"
-                FontSize="19"/>      
+                FontSize="19"
+                Click="deleteBookingBtn_Click"/>      
         </StackPanel>
 
     </Grid>

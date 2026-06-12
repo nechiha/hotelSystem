@@ -22,8 +22,8 @@
                        FontSize="20"
                        Margin="10 120 20 0"
                        HorizontalAlignment="Left"/>
-            <!-- ТУДУ: добавить текст
-            опции могут быть внесены в бронь за отдельную плату-->
+            
+  
         </StackPanel>
     </Grid>
 </UserControl>

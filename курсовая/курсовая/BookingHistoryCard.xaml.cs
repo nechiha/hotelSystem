@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using курсовая.Properties;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace курсовая
 {
@@ -30,18 +31,45 @@ namespace курсовая
             _bookingData = bookingData;
             this.DataContext = bookingData;
 
-            // 🔥 УБРАЛ .bookings — обращайся напрямую!
-            bool canCancel = _bookingData.bookingStatusId == 1 &&
-                           _bookingData.departureDate >= DateTime.Today;
-
+            // Кнопка отмены видна, только если бронь можно отменить
+            bool canCancel = _bookingData.canCancel;
             deleteBookingBtn.Visibility = canCancel ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void deleteBookingBtn_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Логика отмены
-            MessageBox.Show("Бронирование отменено (теоритически)");
-            Window.GetWindow(this).Close();
+            var result = MessageBox.Show(
+                "Вы уверены, что хотите отменить бронирование?",
+                "Подтверждение отмены",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes) return;
+
+            int bookingId = _bookingData.bookingId;
+
+            using (var context = new hotelSystemEntities1())
+            {
+                try
+                {
+                    var booking = context.bookings.Find(bookingId);
+                    if (booking != null)
+                    {
+                        booking.bookingStatusId = 2; // Отменено
+                        context.SaveChanges();
+                    }
+
+                    MessageBox.Show("Бронирование отменено", "Готово",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Закрываем окно просмотра — список обновится в bookingHistoryPage
+                    Window.GetWindow(this)?.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при отмене: " + ex.Message, "Ошибка",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }
