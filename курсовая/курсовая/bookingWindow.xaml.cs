@@ -17,92 +17,162 @@ namespace курсовая
 {
     public partial class bookingWindow : Window
     {
-        // 🔥 Храним добавленные опции (ComboBox + выбранный optionId)
-        private List<(ComboBox comboBox, int optionId)> _addedOptions = new List<(ComboBox comboBox, int optionId)>();
         // 🔥 Данные комнаты (передаются из mainPage)
         public int SelectedRoomId { get; set; }
         public double RoomPrice { get; set; }
 
-        public bookingWindow()
+        // Класс выбранной опции
+        public class SelectedOption
         {
-            InitializeComponent();
-            LoadComboBoxes();
+            public int optionId { get; set; }
+            public string optionName { get; set; }
+            public double price { get; set; }
+        }
 
-            // 🔥 Подписываемся на события изменения дат
-            arriveDatePick.SelectedDateTimeChanged += (s, e) => UpdateTotalPrice();
-            departureDatePick.SelectedDateTimeChanged += (s, e) => UpdateTotalPrice();
+        // Список выбранных опций
+        private System.Collections.ObjectModel.ObservableCollection<SelectedOption> _selectedOptions
+            = new System.Collections.ObjectModel.ObservableCollection<SelectedOption>();
+
+
+
+        private void Phone_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = !e.Text.All(char.IsDigit);
+        }
+
+        private void Phone_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(string)))
+            {
+                string text = ((string)e.DataObject.GetData(typeof(string))).Replace(" ", "");
+                if (!text.All(char.IsDigit)) e.CancelCommand();
+            }
+            else e.CancelCommand();
         }
 
 
-        /// <summary>
-        /// Загружает данные в комбобоксы
-        /// </summary>
-        private void LoadComboBoxes()
+
+
+        public bookingWindow()
+        {
+            InitializeComponent();
+            LoadOptions();
+
+            arriveDatePick.SelectedDateTimeChanged += (s, e) => { UpdateTotalPrice(); ValidateInput(); };
+            departureDatePick.SelectedDateTimeChanged += (s, e) => { UpdateTotalPrice(); ValidateInput(); };
+
+            this.Loaded += BookingWindow_Loaded;
+
+            selectedOptionsList.ItemsSource = _selectedOptions;
+
+        }
+
+        private void LoadOptions()
         {
             using (var context = new hotelSystemEntities1())
             {
-                // Кол-во персон
-                for (int i = 1; i <= 10; i++)
-                    peopleAmountCB.Items.Add(i);
-                peopleAmountCB.SelectedIndex = 0;
-
-                // Опции
-                var options = context.options.ToList();
+                // Не показываем "Нет" (optionId = 1) в списке выбора
+                var options = context.options
+                    .Where(o => o.optionId != 1)
+                    .ToList();
                 insertOptionCB.ItemsSource = options;
                 insertOptionCB.DisplayMemberPath = "optionName";
                 insertOptionCB.SelectedValuePath = "optionId";
             }
         }
 
-        /// <summary>
-        /// Кнопка "+" — добавляет новый ComboBox для опции
-        /// </summary>
         private void addOptionBtn_Click(object sender, RoutedEventArgs e)
         {
             if (insertOptionCB.SelectedItem == null)
             {
-                MessageBox.Show("Выберите опцию перед добавлением", "Внимание",
+                MessageBox.Show("Выберите услугу перед добавлением", "Внимание",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            var selectedOption = insertOptionCB.SelectedItem as options;
+            var selected = insertOptionCB.SelectedItem as options;
 
-            // 🔥 Пропускаем "Нет" (optionId = 1)
-            if (selectedOption.optionId == 1)
+            // Защита от дубликатов
+            if (_selectedOptions.Any(o => o.optionId == selected.optionId))
             {
-                MessageBox.Show("Опция 'Нет' не добавляется", "Внимание",
+                MessageBox.Show("Эта услуга уже добавлена", "Внимание",
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            var newCombo = new ComboBox
+            _selectedOptions.Add(new SelectedOption
             {
-                Width = 300,
-                Height = 35,
-                Margin = new Thickness(0, 5, 0, 0),
-                FontSize = 15,
-                ItemsSource = insertOptionCB.ItemsSource,
-                DisplayMemberPath = "optionName",
-                SelectedValuePath = "optionId",
-                Tag = "dynamicOption"
-            };
-            newCombo.SelectedValue = selectedOption.optionId;
-
-            var optionsPanel = FindVisualChild<StackPanel>(this, "optionsPanel");
-            if (optionsPanel != null)
-                optionsPanel.Children.Add(newCombo);
-
-            _addedOptions.Add((newCombo, selectedOption.optionId));
-
-            var margin = addOptionBtn.Margin;
-            addOptionBtn.Margin = new Thickness(margin.Left, margin.Top + 40, margin.Right, margin.Bottom);
-
-            // 🔥 Обновляем цену
-            UpdateTotalPrice();
+                optionId = selected.optionId,
+                optionName = selected.optionName,
+                price = selected.price
+            });
 
             insertOptionCB.SelectedIndex = -1;
+            UpdateTotalPrice();
         }
+
+        private void removeOptionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.Tag != null)
+            {
+                int optionId = (int)fe.Tag;
+                var toRemove = _selectedOptions.FirstOrDefault(o => o.optionId == optionId);
+                if (toRemove != null)
+                {
+                    _selectedOptions.Remove(toRemove);
+                    UpdateTotalPrice();
+                }
+            }
+        }
+
+        private void BookingWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            int capacity = 1;
+            using (var context = new hotelSystemEntities1())
+            {
+                var room = context.rooms.Find(SelectedRoomId);
+                if (room != null)
+                    capacity = room.typeId > 4 ? room.typeId - 4 : room.typeId; // 1..4
+            }
+
+            peopleAmountCB.Items.Clear();
+            for (int i = 1; i <= capacity; i++)
+                peopleAmountCB.Items.Add(i);
+            peopleAmountCB.SelectedIndex = 0;
+
+            ValidateInput();
+        }
+
+        // Мгновенная проверка: подсветка полей + доступность кнопки
+        private void ValidateInput(object sender = null, EventArgs e = null)
+        {
+            bool surnameOk = !string.IsNullOrWhiteSpace(insertSurname.Text);
+            bool nameOk = !string.IsNullOrWhiteSpace(insertName.Text);
+            bool phoneOk = insertPhone.Text.Trim().Length >= 5;
+            bool datesOk = arriveDatePick.SelectedDateTime.HasValue &&
+                           departureDatePick.SelectedDateTime.HasValue &&
+                           (departureDatePick.SelectedDateTime.Value.Date
+                                - arriveDatePick.SelectedDateTime.Value.Date).Days > 0;
+            bool peopleOk = peopleAmountCB.SelectedItem != null;
+
+            // Цветовая подсветка границ (красная = ошибка, обычная = ок)
+            MarkField(insertSurname, surnameOk);
+            MarkField(insertName, nameOk);
+            MarkField(insertPhone, phoneOk);
+
+            // Кнопка активна только если всё заполнено
+            toBookBtn.IsEnabled = surnameOk && nameOk && phoneOk && datesOk && peopleOk;
+        }
+
+        // Подсветка одного поля
+        private void MarkField(Control field, bool isOk)
+        {
+            field.BorderBrush = isOk
+                ? new SolidColorBrush(Color.FromRgb(0xE4, 0x90, 0xA5)) // обычный розовый
+                : new SolidColorBrush(Color.FromRgb(0xE5, 0x39, 0x35)); // красный при ошибке
+            field.BorderThickness = new Thickness(1.5);
+        }
+
 
         /// <summary>
         /// Обновляет отображение общей стоимости
@@ -111,37 +181,21 @@ namespace курсовая
         {
             if (!arriveDatePick.SelectedDateTime.HasValue || !departureDatePick.SelectedDateTime.HasValue)
             {
-                if (totalPriceText != null)
-                    totalPriceText.Text = "0.00 ₽";
+                if (totalPriceText != null) totalPriceText.Text = "0.00 ₽";
                 return;
             }
 
-            int days = (departureDatePick.SelectedDateTime.Value.Date - arriveDatePick.SelectedDateTime.Value.Date).Days;
+            int days = (departureDatePick.SelectedDateTime.Value.Date
+                        - arriveDatePick.SelectedDateTime.Value.Date).Days;
             if (days <= 0)
             {
-                if (totalPriceText != null)
-                    totalPriceText.Text = "0.00 ₽";
+                if (totalPriceText != null) totalPriceText.Text = "0.00 ₽";
                 return;
             }
 
             double roomTotal = RoomPrice * days;
-            double optionsTotal = 0;
+            double optionsTotal = _selectedOptions.Sum(o => o.price);
 
-            // Считаем стоимость добавленных опций (ПРОПУСКАЕМ optionId = 1)
-            foreach (var item in _addedOptions)
-            {
-                if (item.optionId == 1) // Пропускаем "Нет"
-                    continue;
-
-                using (var context = new hotelSystemEntities1())
-                {
-                    var option = context.options.Find(item.optionId);
-                    if (option != null)
-                        optionsTotal += option.price;
-                }
-            }
-
-            // 🔥 Обновляем цену
             if (totalPriceText != null)
                 totalPriceText.Text = $"{roomTotal + optionsTotal:0.00} ₽";
         }
@@ -151,11 +205,13 @@ namespace курсовая
         /// </summary>
         private void toBookBtn_Click(object sender, RoutedEventArgs e)
         {
-            // 🔥 Валидация
+            // Базовая валидация
             if (string.IsNullOrWhiteSpace(insertSurname.Text) ||
                 string.IsNullOrWhiteSpace(insertName.Text) ||
+                string.IsNullOrWhiteSpace(insertPhone.Text) ||
                 !arriveDatePick.SelectedDateTime.HasValue ||
                 !departureDatePick.SelectedDateTime.HasValue ||
+                peopleAmountCB.SelectedItem == null ||
                 SelectedRoomId == 0)
             {
                 MessageBox.Show("Заполните все обязательные поля", "Ошибка",
@@ -163,7 +219,19 @@ namespace курсовая
                 return;
             }
 
-            int days = (departureDatePick.SelectedDateTime.Value.Date - arriveDatePick.SelectedDateTime.Value.Date).Days;
+            // Телефон: минимум цифр
+            string phone = insertPhone.Text.Trim();
+            if (phone.Length < 5)
+            {
+                MessageBox.Show("Введите корректный номер телефона", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            DateTime arrive = arriveDatePick.SelectedDateTime.Value;
+            DateTime departure = departureDatePick.SelectedDateTime.Value;
+
+            int days = (departure.Date - arrive.Date).Days;
             if (days <= 0)
             {
                 MessageBox.Show("Дата выезда должна быть позже даты заезда", "Ошибка",
@@ -171,100 +239,111 @@ namespace курсовая
                 return;
             }
 
+            int peopleAmount = (int)peopleAmountCB.SelectedItem;
+
             using (var context = new hotelSystemEntities1())
             {
                 try
                 {
-                    // 🔥 1. Ищем или создаём клиента
-                    var client = context.clients
-                        .FirstOrDefault(c => c.clientSurname == insertSurname.Text &&
-                                           c.clientName == insertName.Text &&
-                                           c.clientPatronomyc == insertPatronomyc.Text);
+                    // 🔥 Проверка вместимости (на всякий случай, даже если список ограничен)
+                    var roomEntity = context.rooms.Find(SelectedRoomId);
+                    if (roomEntity != null)
+                    {
+                        int capacity = roomEntity.typeId > 4 ? roomEntity.typeId - 4 : roomEntity.typeId;
+                        if (peopleAmount > capacity)
+                        {
+                            MessageBox.Show($"В этот номер можно заселить не более {capacity} чел.",
+                                "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                    }
+
+                    // 🔥 Проверка пересечения дат с другими активными бронями этого номера
+                    bool overlap = context.bookingRooms.Any(br =>
+                        br.roomId == SelectedRoomId &&
+                        br.bookings.bookingStatusId == 1 &&
+                        br.arrivingDate < departure &&
+                        br.departureDate > arrive);
+
+                    if (overlap)
+                    {
+                        MessageBox.Show("Этот номер уже забронирован на выбранные даты. Выберите другие даты.",
+                            "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    // Нормализуем отчество: пусто -> null
+                    string patronymic = string.IsNullOrWhiteSpace(insertPatronomyc.Text)
+                        ? null : insertPatronomyc.Text.Trim();
+
+                    // 1. Ищем или создаём клиента
+                    var client = context.clients.FirstOrDefault(c =>
+                        c.clientSurname == insertSurname.Text &&
+                        c.clientName == insertName.Text &&
+                        c.clientPatronomyc == patronymic &&
+                        c.clientPhone == phone);
 
                     if (client == null)
                     {
                         client = new clients
                         {
-                            clientSurname = insertSurname.Text,
-                            clientName = insertName.Text,
-                            clientPatronomyc = insertPatronomyc.Text
+                            clientSurname = insertSurname.Text.Trim(),
+                            clientName = insertName.Text.Trim(),
+                            clientPatronomyc = patronymic,
+                            clientPhone = phone
                         };
                         context.clients.Add(client);
                         context.SaveChanges();
                     }
 
-                    // 🔥 2. Создаём бронь
+                    // 2. Бронь
                     var booking = new bookings
                     {
                         clientId = client.clientId,
-                        amountOfPeople = peopleAmountCB.SelectedIndex + 1,
-                        bookingStatusId = 1, // Подтверждено
+                        amountOfPeople = peopleAmount,
+                        bookingStatusId = 1
                     };
-
                     context.bookings.Add(booking);
                     context.SaveChanges();
 
-                    // 🔥 3. Создаём связь номер-бронь
-                    var bookingRoom = new bookingRooms
+                    // 3. Связь номер-бронь
+                    context.bookingRooms.Add(new bookingRooms
                     {
                         bookingId = booking.bookingId,
                         roomId = SelectedRoomId,
-                        arrivingDate = arriveDatePick.SelectedDateTime.Value,
-                        departureDate = departureDatePick.SelectedDateTime.Value
-                    };
-                    context.bookingRooms.Add(bookingRoom);
+                        arrivingDate = arrive,
+                        departureDate = departure
+                    });
 
-                    // 🔥 4. Добавляем опции (ПРОПУСКАЕМ optionId = 1)
+                    // 4. Опции
                     double optionsTotal = 0;
-                    foreach (var item in _addedOptions)
+                    foreach (var opt in _selectedOptions)
                     {
-                        // 🔥 Пропускаем "Нет" (optionId = 1)
-                        if (item.optionId == 1)
-                            continue;
-
-                        var option = context.options.Find(item.optionId);
-                        if (option != null)
+                        optionsTotal += opt.price;
+                        context.bookingOptions.Add(new bookingOptions
                         {
-                            optionsTotal += option.price;
-
-                            var bookingOption = new bookingOptions
-                            {
-                                bookingId = booking.bookingId,
-                                optionId = item.optionId
-                            };
-                            context.bookingOptions.Add(bookingOption);
-                        }
+                            bookingId = booking.bookingId,
+                            optionId = opt.optionId
+                        });
                     }
 
-                    // 🔥 5. Считаем общую стоимость
-                    double roomTotal = RoomPrice * days;
-                    double totalPrice = roomTotal + optionsTotal;
-
-                    // 🔥 6. СОЗДАЁМ СЧЁТ В ТАБЛИЦЕ bills
-                    var bill = new bills
+                    // 5. Счёт
+                    double totalPrice = RoomPrice * days + optionsTotal;
+                    context.bills.Add(new bills
                     {
                         bookingId = booking.bookingId,
                         total = totalPrice
-                    };
-                    context.bills.Add(bill);
-
-                    // 🔥 7. Обновляем статус комнаты
-                    var room = context.rooms.Find(SelectedRoomId);
-                    if (room != null)
-                    {
-                        room.roomStatusId = 2; // занята
-                    }
+                    });
 
                     context.SaveChanges();
 
-                    MessageBox.Show($"Бронирование успешно создано!\nСчёт на сумму: {totalPrice:0.00} ₽", "Успех",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-
+                    MessageBox.Show($"Бронирование успешно создано!\nСчёт на сумму: {totalPrice:0.00} ₽",
+                        "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                     this.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
+                    MessageBox.Show("Ошибка при сохранении: " + ex.Message, "Ошибка",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
@@ -274,22 +353,7 @@ namespace курсовая
 
         /// <summary>
         /// Вспомогательный метод для поиска элемента по имени в визуальном дереве
-        /// </summary>
-        private T FindVisualChild<T>(DependencyObject parent, string childName) where T : FrameworkElement
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
-            {
-                var child = VisualTreeHelper.GetChild(parent, i);
-
-                if (child is T frameworkElement && frameworkElement.Name == childName)
-                    return frameworkElement;
-
-                var childOfChild = FindVisualChild<T>(child, childName);
-                if (childOfChild != null)
-                    return childOfChild;
-            }
-            return null;
-        }
+        /// </summary>       
 
         private void arriveDatePick_SelectedDateTimeChanged(object sender, HandyControl.Data.FunctionEventArgs<DateTime?> e)
         {

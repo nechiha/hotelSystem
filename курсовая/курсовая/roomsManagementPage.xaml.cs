@@ -36,8 +36,8 @@ namespace курсовая
             managmentFilterCB.Items.Add("Все номера");
             managmentFilterCB.Items.Add("Только обычные");
             managmentFilterCB.Items.Add("Только VIP");
-            managmentFilterCB.Items.Add("Свободные");
-            managmentFilterCB.Items.Add("Занятые");
+            managmentFilterCB.Items.Add("Свободны сегодня");
+            managmentFilterCB.Items.Add("Заняты сегодня");
             managmentFilterCB.SelectedIndex = 0;
             managmentFilterCB.SelectionChanged += (s, e) => _roomsView?.Refresh();
         }
@@ -46,28 +46,36 @@ namespace курсовая
         {
             using (var context = new hotelSystemEntities1())
             {
+                DateTime today = DateTime.Today;
+                DateTime todayEnd = today.AddDays(1);
+
+                // id номеров, занятых сегодня
+                var occupiedTodayIds = context.bookingRooms
+                    .Where(br => br.bookings.bookingStatusId == 1
+                                 && br.arrivingDate < todayEnd
+                                 && br.departureDate >= today)
+                    .Select(br => br.roomId)
+                    .Distinct()
+                    .ToList();
+
                 var rooms = (from r in context.rooms
                              join rt in context.roomTypes on r.typeId equals rt.typeId
-                             join rs in context.roomStatuses on r.roomStatusId equals rs.roomStatusId
                              select new
                              {
+                                 r.roomId,
                                  r.roomNumber,
                                  r.roomFloor,
-                                 r.typeId,
-                                 typeName = rt.typeName,
-                                 statusName = rs.roomStatusName,
-                                 r.roomStatusId
+                                 r.typeId
                              })
                              .OrderBy(r => r.roomNumber)
                              .ToList()
-                             // формируем поля для отображения
                              .Select(r => new
                              {
                                  r.roomNumber,
                                  r.roomFloor,
                                  capacity = r.typeId > 4 ? r.typeId - 4 : r.typeId,
                                  category = r.typeId > 4 ? "VIP" : "Обычный",
-                                 r.roomStatusId
+                                 isBusyToday = occupiedTodayIds.Contains(r.roomId)
                              })
                              .ToList();
 
@@ -81,7 +89,6 @@ namespace курсовая
         {
             dynamic room = item;
 
-            // Поиск по номеру комнаты
             string search = searchManagementRoomsTB.Text?.Trim().ToLower() ?? "";
             if (!string.IsNullOrEmpty(search))
             {
@@ -89,15 +96,14 @@ namespace курсовая
                     return false;
             }
 
-            // Фильтр
             string filter = managmentFilterCB.SelectedItem?.ToString() ?? "Все номера";
             switch (filter)
             {
                 case "Только обычные": return room.category == "Обычный";
                 case "Только VIP": return room.category == "VIP";
-                case "Свободные": return room.roomStatusId == 1;
-                case "Занятые": return room.roomStatusId == 2;
-                default: return true; // Все номера
+                case "Свободны сегодня": return room.isBusyToday == false;
+                case "Заняты сегодня": return room.isBusyToday == true;
+                default: return true;
             }
         }
 

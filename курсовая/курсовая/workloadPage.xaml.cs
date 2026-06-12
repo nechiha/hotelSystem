@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LiveCharts;
+using LiveCharts.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,72 +25,94 @@ namespace курсовая
         public workloadPage()
         {
             InitializeComponent();
-            LoadPeriods();
+
+            periodStartPicker.SelectedDate = DateTime.Today;
+            periodEndPicker.SelectedDate = DateTime.Today.AddDays(6);
+
+            LoadWorkload();
         }
 
-        private void LoadPeriods()
+        private void Period_DateChanged(object sender, SelectionChangedEventArgs e)
         {
-            workloadPeriod.Items.Clear();
-            workloadPeriod.Items.Add("Сегодня");
-            workloadPeriod.Items.Add("Текущая неделя");
-            workloadPeriod.Items.Add("Текущий месяц");
-            workloadPeriod.SelectionChanged += (s, e) => LoadWorkload();
-            workloadPeriod.SelectedIndex = 0; // вызовет LoadWorkload
+            LoadWorkload();
         }
 
         private void LoadWorkload()
         {
-            // 1. Определяем границы периода
-            DateTime periodStart, periodEnd;
-            string period = workloadPeriod.SelectedItem?.ToString() ?? "Сегодня";
+            if (periodStartPicker?.SelectedDate == null || periodEndPicker?.SelectedDate == null)
+                return;
 
-            DateTime today = DateTime.Today;
-            switch (period)
+            DateTime periodStart = periodStartPicker.SelectedDate.Value.Date;
+            DateTime periodEnd = periodEndPicker.SelectedDate.Value.Date;
+
+            if (periodEnd < periodStart)
             {
-                case "Текущая неделя":
-                    // понедельник текущей недели
-                    int diff = (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7;
-                    periodStart = today.AddDays(-diff);
-                    periodEnd = periodStart.AddDays(6);
-                    break;
-
-                case "Текущий месяц":
-                    periodStart = new DateTime(today.Year, today.Month, 1);
-                    periodEnd = periodStart.AddMonths(1).AddDays(-1);
-                    break;
-
-                default: // Сегодня
-                    periodStart = today;
-                    periodEnd = today;
-                    break;
+                MessageBox.Show("Дата окончания не может быть раньше даты начала",
+                    "Некорректный период", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
 
-            // конец периода берём до конца дня
-            DateTime periodEndInclusive = periodEnd.Date.AddDays(1).AddTicks(-1);
+            DateTime periodEndInclusive = periodEnd.AddDays(1).AddTicks(-1);
 
             using (var context = new hotelSystemEntities1())
             {
-                // 2. Берём активные брони, пересекающиеся с периодом
-                //    Пересечение: заезд <= конец периода И выезд >= начало периода
                 var busy = (from br in context.bookingRooms
                             join r in context.rooms on br.roomId equals r.roomId
                             where br.bookings.bookingStatusId == 1
                                   && br.arrivingDate <= periodEndInclusive
                                   && br.departureDate >= periodStart
                             select new { br.roomId, r.typeId })
-                            .Distinct()   // один номер считаем один раз
+                            .Distinct()
                             .ToList();
 
-                // 3. Считаем обычные (typeId <= 4) и VIP (typeId >= 5)
                 int regular = busy.Count(x => x.typeId <= 4);
                 int vip = busy.Count(x => x.typeId >= 5);
+                int totalBusy = regular + vip;
 
-                // 4. Выводим одной строкой в DataGrid
-                workloadDataGrid.ItemsSource = new[]
-                {
-                    new { regularRooms = regular, vipRooms = vip }
-                };
+                int totalRooms = context.rooms.Count();
+                int free = totalRooms - totalBusy;
+                if (free < 0) free = 0;
+
+                // Плитки
+                regularValue.Text = regular.ToString();
+                vipValue.Text = vip.ToString();
+                totalBusyValue.Text = totalBusy.ToString();
+                totalRoomsValue.Text = totalRooms.ToString();
+
+                // Цветовая индикация загрузки (по проценту занятости)
+                double load = totalRooms > 0 ? (double)totalBusy / totalRooms : 0;
+                if (load < 0.5)
+                    totalBusyValue.Foreground = new SolidColorBrush(Color.FromRgb(0x4C, 0xAF, 0x50)); // зелёный
+                else if (load < 0.8)
+                    totalBusyValue.Foreground = new SolidColorBrush(Color.FromRgb(0xFF, 0x98, 0x00)); // оранжевый
+                else
+                    totalBusyValue.Foreground = new SolidColorBrush(Color.FromRgb(0xE5, 0x39, 0x35)); // красный
+
+                UpdateChart(totalBusy, free);
             }
         }
+
+        private void UpdateChart(int busy, int free)
+        {
+            workloadPieChart.Series = new SeriesCollection
+            {
+                new PieSeries
+                {
+                    Title = "Занято",
+                    Values = new ChartValues<int> { busy },
+                    DataLabels = true,
+                    Fill = new SolidColorBrush(Color.FromRgb(0xE4, 0x90, 0xA5)),
+                    LabelPoint = p => $"{busy}"
+                },
+                new PieSeries
+                {
+                    Title = "Свободно",
+                    Values = new ChartValues<int> { free },
+                    DataLabels = true,
+                    Fill = new SolidColorBrush(Color.FromRgb(0xE0, 0xE0, 0xE0)),
+                    LabelPoint = p => $"{free}"
+                }
+            };
+        }
     }
-}   
+}

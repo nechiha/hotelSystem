@@ -7,54 +7,102 @@
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="1920"
       xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       hc:WindowAttach.IsDragElement="False"
       FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC"
       Title="Отчет по загрузке">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <StackPanel>
-
-            <TextBlock Text="Загрузка за: "
-                       FontSize="50"
-                       FontWeight="Medium"
-                       Foreground="#e490a5"
-                       HorizontalAlignment="Left"                 
-                       Margin="50 70 0 0"/>
-            <ComboBox x:Name="workloadPeriod"
-                      hc:InfoElement.Placeholder="Текущий период"
-                      Style="{StaticResource ComboBoxExtend}"
-                      FontSize="20"
-                      Margin="50 50 0 0"
-                      Height="45"
-                      Width="400"
-                      HorizontalAlignment="Left"/>
-            
-            <DataGrid x:Name="workloadDataGrid"
-                      Margin="50 50 0 0"
-                      Width="auto"
-                      HorizontalAlignment="Left"
-                      AutoGenerateColumns="False"
-                      HeadersVisibility="All" 
-                      FontSize="18"
-                      RowHeaderWidth="60">
-
-                <DataGrid.Columns> <!--Binding="{Binding ...}"--> 
-                    <DataGridTextColumn IsReadOnly="True" 
-                                        Width="auto"
-                                        CanUserResize="False" 
-                                        Binding="{Binding regularRooms}"
-                                        Header="Кол-во забронированных номеров"/>
-                    <DataGridTextColumn IsReadOnly="True"
-                                        Width="auto"
-                                        HeaderStringFormat=""
-                                        CanUserResize="False"
-                                        Binding="{Binding vipRooms}"
-                                        Header="Кол-во забронированных VIP номеров"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
+        <!-- Шапка: заголовок + период -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Загрузка отеля"
+                   FontSize="50" FontWeight="Medium" Foreground="#e490a5"
+                   HorizontalAlignment="Center" Margin="0 40 0 0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 25 0 0">
+                <hc:DatePicker x:Name="periodStartPicker"
+                           hc:InfoElement.Title="Начало периода"
+                           FontSize="18" Width="220" Margin="0 0 20 0"
+                           SelectedDateChanged="Period_DateChanged"/>
+                <hc:DatePicker x:Name="periodEndPicker"
+                           hc:InfoElement.Title="Конец периода"
+                           FontSize="18" Width="220"
+                           SelectedDateChanged="Period_DateChanged"/>
+            </StackPanel>
         </StackPanel>
-        
+
+        <!-- Контент: плитки слева, диаграмма справа -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Плитки 2x2 -->
+            <Grid Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <hc:Card Grid.Row="0" Grid.Column="0" Width="230" Height="150" Margin="12"
+                     BorderThickness="0" hc:BorderElement.CornerRadius="15" Background="#FFF0F4">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="regularValue" Text="0" FontSize="48" FontWeight="Bold"
+                               HorizontalAlignment="Center" Foreground="#e490a5"/>
+                        <TextBlock Text="Занято обычных" FontSize="16" Foreground="Gray"
+                               HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </hc:Card>
+
+                <hc:Card Grid.Row="0" Grid.Column="1" Width="230" Height="150" Margin="12"
+                     BorderThickness="0" hc:BorderElement.CornerRadius="15" Background="#FFF0F4">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="vipValue" Text="0" FontSize="48" FontWeight="Bold"
+                               HorizontalAlignment="Center" Foreground="#e490a5"/>
+                        <TextBlock Text="Занято VIP" FontSize="16" Foreground="Gray"
+                               HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </hc:Card>
+
+                <hc:Card Grid.Row="1" Grid.Column="0" Width="230" Height="150" Margin="12"
+                     BorderThickness="0" hc:BorderElement.CornerRadius="15" Background="#FFF0F4">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="totalBusyValue" Text="0" FontSize="48" FontWeight="Bold"
+                               HorizontalAlignment="Center" Foreground="#e490a5"/>
+                        <TextBlock Text="Всего занято" FontSize="16" Foreground="Gray"
+                               HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </hc:Card>
+
+                <hc:Card Grid.Row="1" Grid.Column="1" Width="230" Height="150" Margin="12"
+                     BorderThickness="0" hc:BorderElement.CornerRadius="15" Background="#FFF0F4">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock x:Name="totalRoomsValue" Text="0" FontSize="48" FontWeight="Bold"
+                               HorizontalAlignment="Center" Foreground="#e490a5"/>
+                        <TextBlock Text="Всего номеров" FontSize="16" Foreground="Gray"
+                               HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </hc:Card>
+            </Grid>
+
+            <!-- Диаграмма -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Загруженность"
+                       FontSize="32" FontWeight="Medium" Foreground="#e490a5"
+                       HorizontalAlignment="Center" Margin="0 0 0 20"/>
+                <lvc:PieChart x:Name="workloadPieChart"
+                          Height="420" Width="420"
+                          LegendLocation="Bottom" InnerRadius="0"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

@@ -25,33 +25,29 @@ namespace курсовая
         {
             using (var context = new hotelSystemEntities1())
             {
-                // Освобождаем номера с истёкшей датой выезда
-                var expiredBookings = context.bookingRooms
-                    .Where(br => br.departureDate < DateTime.Today &&
-                                 br.bookings.bookingStatusId == 1)
-                    .ToList();
+                DateTime today = DateTime.Today;
+                DateTime todayEnd = today.AddDays(1); // для сравнения с временем заезда
 
-                foreach (var booking in expiredBookings)
-                {
-                    var room = context.rooms.Find(booking.roomId);
-                    if (room != null && room.roomStatusId == 2)
-                        room.roomStatusId = 1;
-                }
-                context.SaveChanges();
-
-                // 🔥 Определяем активный тариф
+                // Активный тариф
                 var activeRate = context.rates.FirstOrDefault(rt => rt.isActive);
                 int? activeRateId = activeRate?.rateId;
 
+                // roomId номеров, занятых СЕГОДНЯ (есть активная бронь, пересекающая сегодняшний день)
+                var occupiedTodayIds = context.bookingRooms
+                    .Where(br => br.bookings.bookingStatusId == 1
+                                 && br.arrivingDate < todayEnd
+                                 && br.departureDate >= today)
+                    .Select(br => br.roomId)
+                    .Distinct()
+                    .ToList();
+
                 var rooms = (from r in context.rooms
                              join rt in context.roomTypes on r.typeId equals rt.typeId
-                             join rs in context.roomStatuses on r.roomStatusId equals rs.roomStatusId
-                             // 🔥 соединяем ТОЛЬКО с ценами активного тарифа
                              join rateRoom in context.rateForRoomTypes
                                     .Where(x => x.rateId == activeRateId)
                                   on r.typeId equals rateRoom.typeId into rateGroup
                              from rateRoom in rateGroup.DefaultIfEmpty()
-                             where r.roomStatusId == 1
+                             where !occupiedTodayIds.Contains(r.roomId) // 🔥 свободные на сегодня
                              select new
                              {
                                  r.roomId,

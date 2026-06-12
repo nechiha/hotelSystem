@@ -30,39 +30,59 @@
                    Grid.ColumnSpan="2"/>
 
         <StackPanel Grid.Row="1"
-                    Margin="50">
+                    Margin="35">
 
             <TextBox x:Name="insertSurname"
                      Width="300"
                      Style="{StaticResource TextBoxExtend}" 
-                     hc:InfoElement.Title="Фамилия" 
+                     hc:InfoElement.Title="Фамилия"
+                     ToolTip="Введите фамилию гостя"
                      FontSize="15"
                      VerticalAlignment="Center"
-                     Margin="5"/>
+                     Margin="5"
+                     TextChanged="ValidateInput"/>
             <TextBox x:Name="insertName"
                      Width="300"
                      Style="{StaticResource TextBoxExtend}" 
-                     hc:InfoElement.Title="Имя" 
+                     hc:InfoElement.Title="Имя"
+                     ToolTip="Введите имя гостя"
                      FontSize="15"
                      VerticalAlignment="Center"
-                     Margin="5"/>
+                     Margin="5"
+                     TextChanged="ValidateInput"/>
             <TextBox x:Name="insertPatronomyc"
                      Width="300"
                      Style="{StaticResource TextBoxExtend}" 
                      hc:InfoElement.Title="Отчество" 
+                     ToolTip="Введите отчество гостя (необязательно)"                     
                      FontSize="15"
                      VerticalAlignment="Center"
-                     Margin="5"/>
+                     Margin="5"
+                     TextChanged="ValidateInput"/>
+            <TextBox x:Name="insertPhone"
+                     Width="300"
+                     Style="{StaticResource TextBoxExtend}"
+                     hc:InfoElement.Title="Телефон"
+                     ToolTip="Введите номер телефона гостя"        
+                     FontSize="15"
+                     VerticalAlignment="Center"
+                     Margin="5"
+                     MaxLength="12"
+                     PreviewTextInput="Phone_PreviewTextInput"
+                     DataObject.Pasting="Phone_Pasting"/>
             <ComboBox x:Name="peopleAmountCB"
                       Width="300"
                       Style="{StaticResource ComboBoxExtend}" 
-                      hc:InfoElement.Title="Кол-во персон" 
+                      hc:InfoElement.Title="Кол-во персон"
+                      ToolTip="Введите кол-во гостей в номере"                    
                       FontSize="15"
                       VerticalAlignment="Center"
-                      Margin="5"/>
+                      Margin="5"
+                      SelectionChanged="ValidateInput"/>
             <hc:DateTimePicker x:Name="arriveDatePick"
                                Width="300"                         
                                hc:InfoElement.Title="Заезд"
+                               ToolTip="Введите дату и время заезда в номер"
                                Style="{StaticResource DateTimePickerExtend}"
                                FontSize="15"
                                VerticalAlignment="Center"
@@ -72,6 +92,7 @@
             <hc:DateTimePicker x:Name="departureDatePick"
                                Width="300"                         
                                hc:InfoElement.Title="Выезд"
+                               ToolTip="Введите дату и время выезда из номера"
                                Style="{StaticResource DateTimePickerExtend}"
                                FontSize="15"
                                VerticalAlignment="Center"
@@ -92,28 +113,82 @@
             
         </StackPanel>
 
-        <StackPanel x:Name="optionsPanel" 
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="50">
+        <StackPanel x:Name="optionsPanel"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="50">
 
-            <ComboBox x:Name="insertOptionCB"
-                     Width="300"
-                     Style="{StaticResource ComboBoxExtend}" 
-                     hc:InfoElement.Title="Опция (руб)." 
-                     FontSize="15"
-                     VerticalAlignment="Center"
-                     Margin="0"/>
-            <Button x:Name="addOptionBtn"
-                    Content="+"
-                    Height="35"
-                    Width="35"                   
-                    Margin="85 30"
-                    FontSize="15"
-                    HorizontalAlignment="Left"
-                    hc:BorderElement.CornerRadius="20"
-                    Click="addOptionBtn_Click"/>
+            <!-- Выбор опции + кнопка добавления -->
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="insertOptionCB"
+                  Width="250"
+                  Style="{StaticResource ComboBoxExtend}"
+                  hc:InfoElement.Title="Доп. услуга"
+                  FontSize="15"
+                  VerticalAlignment="Center"
+                  ToolTip="Выберите услугу и нажмите +"/>
+                <Button x:Name="addOptionBtn"
+                Content="+"
+                Height="35"
+                Width="35"
+                Margin="10 0 0 0"
+                FontSize="15"
+                VerticalAlignment="Bottom"
+                hc:BorderElement.CornerRadius="20"
+                Foreground="White"
+                Background="#e490a5"
+                ToolTip="Добавить услугу к брони"
+                Click="addOptionBtn_Click"/>
+            </StackPanel>
 
+            <!-- Список выбранных опций -->
+            <TextBlock Text="Выбранные услуги:"
+               FontSize="14"
+               Foreground="Gray"
+               Margin="0 20 0 5"/>
+
+            <ItemsControl x:Name="selectedOptionsList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#FFF0F4"
+                        CornerRadius="10"
+                        Margin="0 0 0 8"
+                        Padding="10 6">
+                            <Grid Width="290">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0"
+                                   Text="{Binding optionName}"
+                                   FontSize="14"
+                                   VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Grid.Column="1"
+                                   Text="{Binding price, StringFormat='{}{0:0} ₽'}"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Foreground="#db6c88"
+                                   VerticalAlignment="Center"
+                                   Margin="10 0"/>
+                                <Button Grid.Column="2"
+                                Content="✕"
+                                Width="24" Height="24"
+                                FontSize="12"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Foreground="Gray"
+                                Cursor="Hand"
+                                ToolTip="Убрать услугу"
+                                Tag="{Binding optionId}"
+                                Click="removeOptionBtn_Click"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal"
