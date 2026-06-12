@@ -23,6 +23,7 @@ namespace курсовая
         public string clientSurname { get; set; }
         public string clientName { get; set; }
         public string clientPatronomyc { get; set; }
+        public string clientPhone { get; set; }
     
         public virtual ICollection<bookings> bookings { get; set; }
     }

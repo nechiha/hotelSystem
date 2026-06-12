@@ -44,7 +44,7 @@ namespace курсовая
             roomNumberTB.Text = $"№ {_roomData.roomNumber}";  // 🔥 маленькая r
             roomTypeText.Text = _roomData.typeName?.ToString() ?? "Тип не указан";  // 🔥 маленькая t
 
-            LoadRoomImage();
+            //LoadRoomImage();
             toBookBtn.Visibility = _currentMode == InfoCardMode.RoomOverview
                 ? Visibility.Visible : Visibility.Hidden;
         }
@@ -53,7 +53,7 @@ namespace курсовая
         {
             if (string.IsNullOrEmpty(_roomData.roomImage))  // 🔥 маленькая r
             {
-                roomImage.Source = new BitmapImage(new Uri("/Icon/placeholder.png", UriKind.Relative));
+                roomImage.Source = new BitmapImage(new Uri("D:\\hotelSystem\\курсовая\\курсовая\\Image\\ExampleImage.jpg", UriKind.Relative));
                 return;
             }
             try
@@ -65,7 +65,7 @@ namespace курсовая
             }
             catch
             {
-                roomImage.Source = new BitmapImage(new Uri("/Icon/placeholder.png", UriKind.Relative));
+                roomImage.Source = new BitmapImage(new Uri("D:\\hotelSystem\\курсовая\\курсовая\\Image\\ExampleImage.jpg", UriKind.Relative));
             }
         }
 

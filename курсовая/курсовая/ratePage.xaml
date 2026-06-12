@@ -91,7 +91,7 @@
                                Height="50"
                                hc:BorderElement.CornerRadius="12"
                                MouseLeftButtonDown="currentRateBtn_MouseLeftButtonDown">
-                        <TextBlock Text="Текущий тариф"
+                        <TextBlock Text="{Binding rateName}"
                                    FontSize="17"/>
                     </Label>
                         <Button x:Name="editRateBtn"

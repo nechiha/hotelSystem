@@ -12,22 +12,28 @@
       Title="Номерной фонд">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Vertical">
-                
-                <TextBlock Text="Управление номерами"
-                           FontSize="55"
-                           VerticalAlignment="Top"
-                           Margin="0 100"
-                           HorizontalAlignment="Center"
-                           FontWeight="Medium"
-                           Foreground="#e490a5"/>
-                
-                <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center">
-                                   
+        <!-- Шапка: заголовок + кнопки/поиск -->
+        <StackPanel Grid.Row="0" 
+                    Orientation="Vertical"
+                    Margin="10">
 
-            <Button x:Name="addRoomBtn"
+            <TextBlock Text="Управление номерами"
+                   FontSize="55"
+                   Margin="0 60 0 20"
+                   HorizontalAlignment="Center"
+                   FontWeight="Medium"
+                   Foreground="#e490a5"/>
+
+            <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                        Margin="25">
+
+                <Button x:Name="addRoomBtn"
                     Content="+ Добавить номер"
                     FontSize="20"
                     Width="240"
@@ -35,11 +41,11 @@
                     Foreground="White"
                     Background="#e490a5"
                     hc:BorderElement.CornerRadius="15"
-                    Margin="20"                   
+                    Margin="20"
                     VerticalAlignment="Top"
                     Click="addRoomBtn_Click"/>
 
-            <ComboBox x:Name="managmentFilterCB" 
+                <ComboBox x:Name="managmentFilterCB"
                       hc:InfoElement.Placeholder="Фильтры"
                       FontSize="20"
                       Style="{StaticResource ComboBoxExtend}"
@@ -49,7 +55,7 @@
                       hc:BorderElement.CornerRadius="10"
                       VerticalAlignment="Top"/>
 
-            <hc:TextBox x:Name="searchManagementRoomsTB"
+                <hc:TextBox x:Name="searchManagementRoomsTB"
                         Height="45"
                         Width="700"
                         Margin="20"
@@ -58,56 +64,36 @@
                         FontSize="20"
                         hc:BorderElement.CornerRadius="10"
                         TextChanged="searchManagementRoomsTB_TextChanged"/>
-            
-        </StackPanel>
-                    
-                    
             </StackPanel>
-            
+        </StackPanel>
 
+        <!-- DataGrid: тянется вниз, скроллится -->
         <DataGrid x:Name="workloadDataGrid"
-                  Margin="50"
-                  Width="auto"
-                  Height="auto"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  AutoGenerateColumns="False"
-                  HeadersVisibility="All" 
-                  RowHeaderWidth="60"
-                  FontSize="18"
-                  hc:BorderElement.CornerRadius="13">
-
+          Grid.Row="1"
+          Margin="50,15,50,50"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Stretch"
+          AutoGenerateColumns="False"
+          HeadersVisibility="All"
+          RowHeaderWidth="60"
+          FontSize="18"
+          CanUserAddRows="False"
+          ScrollViewer.VerticalScrollBarVisibility="Auto"
+          hc:BorderElement.CornerRadius="13">
             <DataGrid.Columns>
-                <!--Binding="{Binding ...}"-->
-                <DataGridTextColumn IsReadOnly="True" 
-                                    Width="auto"
-                                    FontSize="20"
-                                    CanUserResize="False" 
-                            
-                                    Header="№ комнаты"/>
-                <DataGridTextColumn IsReadOnly="True"
-                                    Width="auto"
-                                    HeaderStringFormat=""
-                                    CanUserResize="False" 
-                            
-                                    Header="Этаж"/>
-                <DataGridTextColumn IsReadOnly="True"
-                                    Width="auto"
-                                    HeaderStringFormat=""
-                                    CanUserResize="False" 
-                            
-                                    Header="Вместимость"/>
-                <DataGridTextColumn IsReadOnly="True"
-                                    Width="auto"
-                                    HeaderStringFormat=""
-                                    CanUserResize="False"
-                                    
-                                    Header="Категория"/>
-                
+                <DataGridTextColumn IsReadOnly="True" Width="150" FontSize="20"
+                            CanUserResize="False"
+                            Header="№ комнаты" Binding="{Binding roomNumber}"/>
+                <DataGridTextColumn IsReadOnly="True" Width="150"
+                            CanUserResize="False"
+                            Header="Этаж" Binding="{Binding roomFloor}"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180"
+                            CanUserResize="False"
+                            Header="Вместимость" Binding="{Binding capacity}"/>
+                <DataGridTextColumn IsReadOnly="True" Width="180"
+                            CanUserResize="False"
+                            Header="Категория" Binding="{Binding category}"/>
             </DataGrid.Columns>
         </DataGrid>
-
-
-
     </Grid>
 </Page>

@@ -23,6 +23,8 @@ namespace курсовая
         public string rateName { get; set; }
         public System.DateTime creatingDate { get; set; }
         public bool isBreakfastIncluded { get; set; }
+        public bool isActive { get; set; }
+        public bool isVIPBreakfastIncluded { get; set; }
     
         public virtual ICollection<rateForRoomTypes> rateForRoomTypes { get; set; }
     }

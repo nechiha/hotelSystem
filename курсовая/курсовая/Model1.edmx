@@ -64,6 +64,7 @@
           <Property Name="clientSurname" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="clientName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="clientPatronomyc" Type="varchar" MaxLength="100" />
+          <Property Name="clientPhone" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="employees">
           <Key>
@@ -100,6 +101,8 @@
           <Property Name="rateName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="creatingDate" Type="datetime" Nullable="false" />
           <Property Name="isBreakfastIncluded" Type="bit" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="isVIPBreakfastIncluded" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="roles">
           <Key>
@@ -455,6 +458,7 @@
           <Property Name="clientName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="clientPatronomyc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="bookings" Relationship="Self.FK__bookings__client__06CD04F7" FromRole="clients" ToRole="bookings" />
+          <Property Name="clientPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="employees">
           <Key>
@@ -497,6 +501,8 @@
           <Property Name="creatingDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="isBreakfastIncluded" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="rateForRoomTypes" Relationship="Self.FK__rateForRo__rateI__0E6E26BF" FromRole="rates" ToRole="rateForRoomTypes" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="isVIPBreakfastIncluded" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="roles">
           <Key>
@@ -849,6 +855,7 @@
           <EntitySetMapping Name="clients">
             <EntityTypeMapping TypeName="hotelSystemModel.clients">
               <MappingFragment StoreEntitySet="clients">
+                <ScalarProperty Name="clientPhone" ColumnName="clientPhone" />
                 <ScalarProperty Name="clientId" ColumnName="clientId" />
                 <ScalarProperty Name="clientSurname" ColumnName="clientSurname" />
                 <ScalarProperty Name="clientName" ColumnName="clientName" />
@@ -889,6 +896,8 @@
           <EntitySetMapping Name="rates">
             <EntityTypeMapping TypeName="hotelSystemModel.rates">
               <MappingFragment StoreEntitySet="rates">
+                <ScalarProperty Name="isVIPBreakfastIncluded" ColumnName="isVIPBreakfastIncluded" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="rateId" ColumnName="rateId" />
                 <ScalarProperty Name="rateName" ColumnName="rateName" />
                 <ScalarProperty Name="creatingDate" ColumnName="creatingDate" />

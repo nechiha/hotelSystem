@@ -43,12 +43,13 @@
                     <DataGridTextColumn IsReadOnly="True" 
                                         Width="auto"
                                         CanUserResize="False" 
-                                        
+                                        Binding="{Binding regularRooms}"
                                         Header="Кол-во забронированных номеров"/>
                     <DataGridTextColumn IsReadOnly="True"
                                         Width="auto"
                                         HeaderStringFormat=""
-                                        CanUserResize="False" 
+                                        CanUserResize="False"
+                                        Binding="{Binding vipRooms}"
                                         Header="Кол-во забронированных VIP номеров"/>
                 </DataGrid.Columns>
             </DataGrid>

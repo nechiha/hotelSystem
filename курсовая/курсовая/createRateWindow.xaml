@@ -61,7 +61,9 @@
                      hc:InfoElement.Necessary="True"
                      Style="{StaticResource TextBoxExtend}"
                      FontSize="15"
-                     Margin="10"/>
+                     Margin="10"
+                     PreviewTextInput="PriceTB_PreviewTextInput"
+                     DataObject.Pasting="PriceTB_Pasting"/>
             <TextBox x:Name="doubleRoomPriceTB"
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
@@ -70,7 +72,9 @@
                      hc:InfoElement.Necessary="True"
                      Style="{StaticResource TextBoxExtend}"
                      FontSize="15"
-                     Margin="10"/>
+                     Margin="10"
+                     PreviewTextInput="PriceTB_PreviewTextInput"
+                     DataObject.Pasting="PriceTB_Pasting"/>
             <TextBox x:Name="tripleRoomPriceTb"
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
@@ -79,7 +83,9 @@
                      hc:InfoElement.Necessary="True"
                      Style="{StaticResource TextBoxExtend}"
                      FontSize="15"
-                     Margin="10"/>
+                     Margin="10"
+                     PreviewTextInput="PriceTB_PreviewTextInput"
+                     DataObject.Pasting="PriceTB_Pasting"/>
             <TextBox x:Name="quadrupleRoomPriceTB"
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
@@ -88,7 +94,8 @@
                      hc:InfoElement.Necessary="True"
                      Style="{StaticResource TextBoxExtend}"
                      FontSize="15"
-                     Margin="10"/>
+                     Margin="10"
+                     />
 
             <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center"
@@ -119,7 +126,9 @@
                      hc:InfoElement.Necessary="False"
                      Style="{StaticResource TextBoxExtend}"
                      FontSize="15"
-                     Margin="10"/>
+                     Margin="10"
+                     PreviewTextInput="PriceTB_PreviewTextInput"
+                     DataObject.Pasting="PriceTB_Pasting"/>
             <TextBox x:Name="doubleVIPRoomPriceTB"
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
@@ -128,7 +137,9 @@
                      hc:InfoElement.Necessary="False"
                      Style="{StaticResource TextBoxExtend}"
                      FontSize="15"
-                     Margin="10"/>
+                     Margin="10"
+                     PreviewTextInput="PriceTB_PreviewTextInput"
+                     DataObject.Pasting="PriceTB_Pasting"/>
             <TextBox x:Name="tripleVIPRoomPriceTb"
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
@@ -137,7 +148,9 @@
                      hc:InfoElement.Necessary="False"
                      Style="{StaticResource TextBoxExtend}"
                      FontSize="15"
-                     Margin="10"/>
+                     Margin="10"
+                     PreviewTextInput="PriceTB_PreviewTextInput"
+                     DataObject.Pasting="PriceTB_Pasting"/>
             <TextBox x:Name="quadrupleVIPRoomPriceTB"
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
@@ -146,12 +159,16 @@
                      hc:InfoElement.Necessary="False"
                      Style="{StaticResource TextBoxExtend}"
                      FontSize="15"
-                     Margin="10"/>
+                     Margin="10"
+                     PreviewTextInput="PriceTB_PreviewTextInput"
+                     DataObject.Pasting="PriceTB_Pasting"/>
             
              <StackPanel Orientation="Horizontal"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
                 <TextBlock Text="Завтрак"
+                           FontSize="15"
+                           Margin="10"
                            />
                 <ToggleButton x:Name="isVIPBreakfastIncludedTglBtn" 
                               Style="{StaticResource ToggleButtonSwitch}"

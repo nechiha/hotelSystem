@@ -39,6 +39,7 @@
              Width="500"
              Height="35"
              Style="{StaticResource TextBoxExtend}"
+             hc:InfoElement.Placeholder="Название тарифа"
              hc:BorderElement.CornerRadius="10"
              FontSize="15"
              HorizontalAlignment="Left"
@@ -52,7 +53,6 @@
                      VerticalAlignment="Center">
 
             <TextBox x:Name="singleRoomPriceTB"
-                     Text=" "
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
                      Width="300"
@@ -62,7 +62,6 @@
                      FontSize="15"
                      Margin="10"/>
             <TextBox x:Name="doubleRoomPriceTB"
-                     Text=" "
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
                      Width="300"
@@ -72,7 +71,6 @@
                      FontSize="15"
                      Margin="10"/>
             <TextBox x:Name="tripleRoomPriceTb"
-                     Text=" "
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
                      Width="300"
@@ -82,7 +80,6 @@
                      FontSize="15"
                      Margin="10"/>
             <TextBox x:Name="quadrupleRoomPriceTB"
-                     Text=" "
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
                      Width="300"
@@ -114,7 +111,6 @@
                     HorizontalAlignment="Center">
 
             <TextBox x:Name="singleVIPRoomPriceTB"
-                     Text=" "
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
                      Width="300"
@@ -124,7 +120,6 @@
                      FontSize="15"
                      Margin="10"/>
             <TextBox x:Name="doubleVIPRoomPriceTB"
-                     Text=" "
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
                      Width="300"
@@ -134,7 +129,6 @@
                      FontSize="15"
                      Margin="10"/>
             <TextBox x:Name="tripleVIPRoomPriceTb"
-                     Text=" "
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
                      Width="300"
@@ -144,7 +138,6 @@
                      FontSize="15"
                      Margin="10"/>
             <TextBox x:Name="quadrupleVIPRoomPriceTB"
-                     Text=" "
                      Height="35"
                      hc:BorderElement.CornerRadius="10"                        
                      Width="300"
