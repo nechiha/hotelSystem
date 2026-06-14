@@ -29,8 +29,12 @@ namespace курсовая
         public roomReviewWindow(dynamic roomData, InfoCardMode mode = InfoCardMode.RoomOverview)
         {
             InitializeComponent();
+
             _roomData = roomData;
             _currentMode = mode;
+
+            this.DataContext = _roomData;
+
             LoadRoomData();
             LoadUserControl();
         }
@@ -44,30 +48,10 @@ namespace курсовая
             roomNumberTB.Text = $"№ {_roomData.roomNumber}";  // 🔥 маленькая r
             roomTypeText.Text = _roomData.typeName?.ToString() ?? "Тип не указан";  // 🔥 маленькая t
 
-            //LoadRoomImage();
             toBookBtn.Visibility = _currentMode == InfoCardMode.RoomOverview
                 ? Visibility.Visible : Visibility.Hidden;
         }
 
-        private void LoadRoomImage()
-        {
-            if (string.IsNullOrEmpty(_roomData.roomImage))  // 🔥 маленькая r
-            {
-                roomImage.Source = new BitmapImage(new Uri("D:\\hotelSystem\\курсовая\\курсовая\\Image\\ExampleImage.jpg", UriKind.Relative));
-                return;
-            }
-            try
-            {
-                string path = _roomData.roomImage;  // 🔥 маленькая r
-                if (!path.StartsWith("/") && !path.StartsWith("pack://"))
-                    path = "/" + path;
-                roomImage.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
-            }
-            catch
-            {
-                roomImage.Source = new BitmapImage(new Uri("D:\\hotelSystem\\курсовая\\курсовая\\Image\\ExampleImage.jpg", UriKind.Relative));
-            }
-        }
 
         private void LoadUserControl()
         {

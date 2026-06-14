@@ -50,7 +50,6 @@ namespace курсовая
             string login = insertLoginTB.Text?.Trim();
             string password = passwordBox.Password;
 
-            // 1) Проверка ввода
             if (string.IsNullOrWhiteSpace(login) && string.IsNullOrWhiteSpace(password))
             {
                 HandyControl.Controls.MessageBox.Show("Введите логин и пароль.", "Вход",
@@ -70,7 +69,6 @@ namespace курсовая
                 return;
             }
 
-            // 2) Запрос в БД (accounts -> employees -> roleId)
             string sql = $@"
 SELECT TOP (1) e.roleId
 FROM accounts a
@@ -82,7 +80,6 @@ WHERE a.accLogin = N'{login.Replace("'", "''")}'
             {
                 DataTable dt = Select(sql);
 
-                // 3) Неверный логин/пароль
                 if (dt.Rows.Count == 0)
                 {
                     HandyControl.Controls.MessageBox.Show("Неверный логин или пароль.", "Вход",
@@ -91,9 +88,8 @@ WHERE a.accLogin = N'{login.Replace("'", "''")}'
                 }
 
                 int roleId = Convert.ToInt32(dt.Rows[0]["roleId"]);
-                bool isAdmin = (roleId == 1); // Администратор = 1
+                bool isAdmin = (roleId == 1); 
 
-                // 4) Открываем generalWindow и скрываем/показываем кнопки
                 var gw = new generalWindow();
 
                 gw.roomsManagementBtn.Visibility = isAdmin ? Visibility.Visible : Visibility.Collapsed;

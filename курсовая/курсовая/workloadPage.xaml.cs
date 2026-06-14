@@ -89,13 +89,11 @@ namespace курсовая
                 _lastStart = periodStart;
                 _lastEnd = periodEnd;
 
-                // Плитки
                 regularValue.Text = regular.ToString();
                 vipValue.Text = vip.ToString();
                 totalBusyValue.Text = totalBusy.ToString();
                 totalRoomsValue.Text = totalRooms.ToString();
 
-                // Цветовая индикация загрузки (по проценту занятости)
                 double load = totalRooms > 0 ? (double)totalBusy / totalRooms : 0;
                 if (load < 0.5)
                     totalBusyValue.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0x4C, 0xAF, 0x50)); // зелёный
@@ -160,12 +158,10 @@ namespace курсовая
                         Name = "Загрузка"
                     });
 
-                    // Заголовок отчёта
                     sheetData.Append(MakeRow($"Отчёт о загрузке отеля за период " +
                         $"{_lastStart:dd.MM.yyyy} — {_lastEnd:dd.MM.yyyy}"));
-                    sheetData.Append(MakeRow("")); // пустая строка
+                    sheetData.Append(MakeRow("")); 
 
-                    // Шапка таблицы
                     sheetData.Append(MakeRow("Показатель", "Значение"));
                     sheetData.Append(MakeRow("Занято обычных номеров", _lastRegular.ToString()));
                     sheetData.Append(MakeRow("Занято VIP номеров", _lastVip.ToString()));
@@ -185,7 +181,6 @@ namespace курсовая
             }
         }
 
-        // Создаёт строку Excel из текстовых ячеек
         private Row MakeRow(params string[] values)
         {
             var row = new Row();
@@ -219,16 +214,13 @@ namespace курсовая
                     mainPart.Document = new A.Document();
                     var body = mainPart.Document.AppendChild(new A.Body());
 
-                    // Заголовок
                     body.AppendChild(MakeParagraph(
                         $"Отчёт о загрузке отеля за период {_lastStart:dd.MM.yyyy} — {_lastEnd:dd.MM.yyyy}",
                         bold: true, size: 32));
                     body.AppendChild(MakeParagraph(""));
 
-                    // Таблица
                     var table = new A.Table();
 
-                    // Границы таблицы
                     table.AppendChild(new A.TableProperties(
                         new A.TableBorders(
                             new A.TopBorder { Val = A.BorderValues.Single, Size = 6 },
@@ -258,7 +250,6 @@ namespace курсовая
             }
         }
 
-        // Абзац Word
         private A.Paragraph MakeParagraph(string text, bool bold = false, int size = 24)
         {
             var run = new A.Run();

@@ -17,11 +17,9 @@ namespace курсовая
 {
     public partial class bookingWindow : Window
     {
-        // 🔥 Данные комнаты (передаются из mainPage)
         public int SelectedRoomId { get; set; }
         public double RoomPrice { get; set; }
 
-        // Класс выбранной опции
         public class SelectedOption
         {
             public int optionId { get; set; }
@@ -29,7 +27,6 @@ namespace курсовая
             public double price { get; set; }
         }
 
-        // Список выбранных опций
         private System.Collections.ObjectModel.ObservableCollection<SelectedOption> _selectedOptions
             = new System.Collections.ObjectModel.ObservableCollection<SelectedOption>();
 
@@ -71,7 +68,6 @@ namespace курсовая
         {
             using (var context = new hotelSystemEntities1())
             {
-                // Не показываем "Нет" (optionId = 1) в списке выбора
                 var options = context.options
                     .Where(o => o.optionId != 1)
                     .ToList();
@@ -92,7 +88,6 @@ namespace курсовая
 
             var selected = insertOptionCB.SelectedItem as options;
 
-            // Защита от дубликатов
             if (_selectedOptions.Any(o => o.optionId == selected.optionId))
             {
                 MessageBox.Show("Эта услуга уже добавлена", "Внимание",
@@ -143,7 +138,6 @@ namespace курсовая
             ValidateInput();
         }
 
-        // Мгновенная проверка: подсветка полей + доступность кнопки
         private void ValidateInput(object sender = null, EventArgs e = null)
         {
             bool surnameOk = !string.IsNullOrWhiteSpace(insertSurname.Text);
@@ -155,16 +149,13 @@ namespace курсовая
                                 - arriveDatePick.SelectedDateTime.Value.Date).Days > 0;
             bool peopleOk = peopleAmountCB.SelectedItem != null;
 
-            // Цветовая подсветка границ (красная = ошибка, обычная = ок)
             MarkField(insertSurname, surnameOk);
             MarkField(insertName, nameOk);
             MarkField(insertPhone, phoneOk);
 
-            // Кнопка активна только если всё заполнено
             toBookBtn.IsEnabled = surnameOk && nameOk && phoneOk && datesOk && peopleOk;
         }
 
-        // Подсветка одного поля
         private void MarkField(Control field, bool isOk)
         {
             field.BorderBrush = isOk
@@ -205,7 +196,6 @@ namespace курсовая
         /// </summary>
         private void toBookBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Базовая валидация
             if (string.IsNullOrWhiteSpace(insertSurname.Text) ||
                 string.IsNullOrWhiteSpace(insertName.Text) ||
                 string.IsNullOrWhiteSpace(insertPhone.Text) ||
@@ -219,7 +209,6 @@ namespace курсовая
                 return;
             }
 
-            // Телефон: минимум цифр
             string phone = insertPhone.Text.Trim();
             if (phone.Length < 5)
             {
@@ -245,7 +234,6 @@ namespace курсовая
             {
                 try
                 {
-                    // 🔥 Проверка вместимости (на всякий случай, даже если список ограничен)
                     var roomEntity = context.rooms.Find(SelectedRoomId);
                     if (roomEntity != null)
                     {
@@ -258,7 +246,6 @@ namespace курсовая
                         }
                     }
 
-                    // 🔥 Проверка пересечения дат с другими активными бронями этого номера
                     bool overlap = context.bookingRooms.Any(br =>
                         br.roomId == SelectedRoomId &&
                         br.bookings.bookingStatusId == 1 &&
@@ -272,11 +259,9 @@ namespace курсовая
                         return;
                     }
 
-                    // Нормализуем отчество: пусто -> null
                     string patronymic = string.IsNullOrWhiteSpace(insertPatronomyc.Text)
                         ? null : insertPatronomyc.Text.Trim();
 
-                    // 1. Ищем или создаём клиента
                     var client = context.clients.FirstOrDefault(c =>
                         c.clientSurname == insertSurname.Text &&
                         c.clientName == insertName.Text &&
@@ -296,7 +281,6 @@ namespace курсовая
                         context.SaveChanges();
                     }
 
-                    // 2. Бронь
                     var booking = new bookings
                     {
                         clientId = client.clientId,
@@ -306,7 +290,6 @@ namespace курсовая
                     context.bookings.Add(booking);
                     context.SaveChanges();
 
-                    // 3. Связь номер-бронь
                     context.bookingRooms.Add(new bookingRooms
                     {
                         bookingId = booking.bookingId,
@@ -315,7 +298,6 @@ namespace курсовая
                         departureDate = departure
                     });
 
-                    // 4. Опции
                     double optionsTotal = 0;
                     foreach (var opt in _selectedOptions)
                     {
@@ -327,7 +309,6 @@ namespace курсовая
                         });
                     }
 
-                    // 5. Счёт
                     double totalPrice = RoomPrice * days + optionsTotal;
                     context.bills.Add(new bills
                     {

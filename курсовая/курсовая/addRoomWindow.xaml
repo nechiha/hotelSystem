@@ -52,15 +52,17 @@
                       VerticalAlignment="Center"
                       Margin="10"/>
             <TextBox x:Name="insertRoomTB"
-                      Height="35"
-                      hc:BorderElement.CornerRadius="10"                        
-                      Width="300"
-                      hc:InfoElement.Placeholder="№ комнаты"
+                     Height="35"
+                     hc:BorderElement.CornerRadius="10"                        
+                     Width="300"
+                     hc:InfoElement.Placeholder="№ комнаты"
                      ToolTip="Введите номер комнаты"
-                      Style="{StaticResource TextBoxExtend}"
-                      FontSize="15"
-                      VerticalAlignment="Center"
-                      Margin="10"/>
+                     Style="{StaticResource TextBoxExtend}"
+                     FontSize="15"
+                     VerticalAlignment="Center"
+                     Margin="10"
+                     PreviewTextInput="RoomNumberTB_PreviewTextInput"
+                     DataObject.Pasting="RoomNumberTB_Pasting"/>
 
             <TextBox x:Name="insertDescriptionTB"
                      Height="100"

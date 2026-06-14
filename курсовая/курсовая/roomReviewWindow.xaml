@@ -12,6 +12,10 @@
         Icon="/Icon/IconWithoutBackground.png"
         FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
 
+    <Window.Resources>
+        <local:RoomImageConverter x:Key="RoomImageConverter"/>
+    </Window.Resources>
+    
     <Grid x:Name="roomReviewGrid">
 
         <Grid.RowDefinitions>
@@ -24,8 +28,8 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Image x:Name="roomImage" 
-               Source="D:\hotelSystem\курсовая\курсовая\Image\ExampleImage.jpg"
+        <Image x:Name="roomImage"
+               Source="{Binding roomImage, Converter={StaticResource RoomImageConverter}}"
                Stretch="UniformToFill"
                Height="600"
                Margin="15"/>

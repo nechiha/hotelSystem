@@ -26,13 +26,11 @@ namespace курсовая
             using (var context = new hotelSystemEntities1())
             {
                 DateTime today = DateTime.Today;
-                DateTime todayEnd = today.AddDays(1); // для сравнения с временем заезда
+                DateTime todayEnd = today.AddDays(1);
 
-                // Активный тариф
                 var activeRate = context.rates.FirstOrDefault(rt => rt.isActive);
                 int? activeRateId = activeRate?.rateId;
 
-                // roomId номеров, занятых СЕГОДНЯ (есть активная бронь, пересекающая сегодняшний день)
                 var occupiedTodayIds = context.bookingRooms
                     .Where(br => br.bookings.bookingStatusId == 1
                                  && br.arrivingDate < todayEnd
@@ -47,7 +45,7 @@ namespace курсовая
                                     .Where(x => x.rateId == activeRateId)
                                   on r.typeId equals rateRoom.typeId into rateGroup
                              from rateRoom in rateGroup.DefaultIfEmpty()
-                             where !occupiedTodayIds.Contains(r.roomId) // 🔥 свободные на сегодня
+                             where !occupiedTodayIds.Contains(r.roomId) 
                              select new
                              {
                                  r.roomId,

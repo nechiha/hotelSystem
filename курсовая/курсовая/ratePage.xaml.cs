@@ -76,7 +76,6 @@ namespace курсовая
                     }));
             }
 
-            // Подписываемся на изменение выбора у каждого элемента
             foreach (var item in _rates)
                 item.PropertyChanged += RateItem_PropertyChanged;
 
@@ -84,7 +83,6 @@ namespace курсовая
             _isLoading = false;
         }
 
-        // Срабатывает, когда пользователь выбирает радиокнопку
         private void RateItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (_isLoading) return;
@@ -95,23 +93,19 @@ namespace курсовая
 
             if (item.IsSelected)
             {
-                // выбрали новый активный — снимаем выбор с остальных в коллекции
                 SetActiveRate(item.rateId);
             }
             else
             {
-                // 🔥 Запрещаем оставить систему без активного тарифа:
-                // если сняли выбор и активных больше нет — возвращаем обратно
                 if (!_rates.Any(r => r.IsSelected))
                 {
                     _isLoading = true;
-                    item.IsSelected = true; // откатываем
+                    item.IsSelected = true; 
                     _isLoading = false;
                 }
             }
         }
 
-        // Делает активным один тариф, остальные — неактивными
         private void SetActiveRate(int rateId)
         {
             using (var context = new hotelSystemEntities1())
@@ -131,16 +125,14 @@ namespace курсовая
             }
         }
 
-        // Клик по названию тарифа тоже выбирает его активным
         private void currentRateBtn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is FrameworkElement fe && fe.DataContext is RateItem item)
             {
-                item.IsSelected = true; // снимет выбор с остальных через GroupName радиокнопки
+                item.IsSelected = true; 
             }
         }
 
-        // Кнопка "Создать новый"
         private void createNewRateBtn_Click(object sender, RoutedEventArgs e)
         {
             var window = new createRateWindow();

@@ -10,6 +10,10 @@
       Title="Главная страница"
       FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
 
+    <Page.Resources>
+        <local:RoomImageConverter x:Key="RoomImageConverter"/>
+    </Page.Resources>
+
     <Grid>
         <!-- Верхняя панель с поиском и фильтром -->
         <StackPanel Orientation="Horizontal" 
@@ -101,8 +105,11 @@
                              Cursor="Hand"
                              MouseLeftButtonDown="Card_MouseLeftButtonDown">
 
-                        <Image Stretch="UniformToFill"
-                               Margin="2"/>
+                        <Image Source="{Binding roomImage, Converter={StaticResource RoomImageConverter}}"
+                               Stretch="UniformToFill"
+                               Height="140"
+                               Margin="2"
+                               ClipToBounds="True"/>
 
                         <hc:Card.Footer>
                             <StackPanel Margin="12,10">

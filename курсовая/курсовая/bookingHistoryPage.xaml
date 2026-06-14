@@ -11,19 +11,25 @@
       Title="История бронирования"
       FontFamily="pack://application:,,,/Fonts/#Chiron GoRound TC">
 
+    <Page.Resources>
+        <local:RoomImageConverter x:Key="RoomImageConverter"/>
+    </Page.Resources>
+
     <Grid>
+        <DockPanel LastChildFill="True">
 
-        <StackPanel>
+            <TextBlock DockPanel.Dock="Top"
+                   Text="История бронирования"
+                   HorizontalAlignment="Center"
+                   FontSize="55"
+                   Margin="0 70 0 50"
+                   FontWeight="Medium"
+                   Foreground="#e490a5"/>
 
-            <TextBlock Text="История бронирования"
-                       HorizontalAlignment="Center"
-                       FontSize="55"
-                       Margin="0 100"
-                       FontWeight="Medium"
-                       Foreground="#e490a5"/>
-
-            <StackPanel Orientation="Horizontal" 
-                        HorizontalAlignment="Center">
+            <StackPanel DockPanel.Dock="Top"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center"
+                    Margin="0 0 0 40">
 
                 <hc:TextBox x:Name="searchBookingTB"
                             Height="50"
@@ -71,8 +77,9 @@
 
 
             <ListBox x:Name="RoomsListBox"
-                     Margin="0 50 0 0"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                     Margin="40 0 40 40"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                      d:ItemsSource="{d:SampleData}"
                      Style="{DynamicResource ListBoxModernStyle}"
                      BorderThickness="0"
@@ -99,9 +106,11 @@
                                  Cursor="Hand"
                                  MouseLeftButtonDown="Card_MouseLeftButtonDown">
 
-                            <Image 
+                            <Image Source="{Binding roomImage, Converter={StaticResource RoomImageConverter}}"
                                    Stretch="UniformToFill"
-                                   Margin="2"/>
+                                   Height="140"
+                                   Margin="2"
+                                   ClipToBounds="True"/>
 
                             <hc:Card.Footer>
                                 <StackPanel Margin="12,10">
@@ -137,6 +146,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-        </StackPanel>
+        </DockPanel>
     </Grid>
 </Page>

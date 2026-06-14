@@ -11,129 +11,192 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
+using Path = System.IO.Path;
 
 namespace курсовая
 {
-    /// <summary>
-    /// Логика взаимодействия для addRoomWindow.xaml
-    /// </summary>
-    public partial class addRoomWindow : Window
-    {
-        public addRoomWindow()
+        public partial class addRoomWindow : Window
         {
-            InitializeComponent();
-            LoadComboBoxes();
-        }
-
-        private void LoadComboBoxes()
-        {
-            // Этажи 1..5
-            for (int i = 1; i <= 5; i++)
-                chooseFloorCB.Items.Add(i);
-
-            // Вместимость 1..4
-            for (int i = 1; i <= 4; i++)
-                chooseCapacityCB.Items.Add(i);
-
-            // Категория
-            chooseCategoryCB.Items.Add("Обычный");
-            chooseCategoryCB.Items.Add("VIP");
-        }
-
-        private void saveRoomBtn_Click_1(object sender, RoutedEventArgs e)
-        {
-            // 1. Проверка заполнения
-            if (chooseFloorCB.SelectedItem == null)
+            public addRoomWindow()
             {
-                MessageBox.Show("Выберите этаж", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (chooseCapacityCB.SelectedItem == null)
-            {
-                MessageBox.Show("Выберите вместимость", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (chooseCategoryCB.SelectedItem == null)
-            {
-                MessageBox.Show("Выберите категорию", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (string.IsNullOrWhiteSpace(insertRoomTB.Text))
-            {
-                MessageBox.Show("Введите номер комнаты", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                InitializeComponent();
+                LoadComboBoxes();
             }
 
-            // 2. Парсим номер комнаты
-            if (!int.TryParse(insertRoomTB.Text.Trim(), out int roomNumber) || roomNumber <= 0)
+            private void LoadComboBoxes()
             {
-                MessageBox.Show("Номер комнаты должен быть положительным числом", "Ошибка",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                for (int i = 1; i <= 5; i++)
+                    chooseFloorCB.Items.Add(i);
+
+                for (int i = 1; i <= 4; i++)
+                    chooseCapacityCB.Items.Add(i);
+
+                chooseCategoryCB.Items.Add("Обычный");
+                chooseCategoryCB.Items.Add("VIP");
             }
 
-            int floor = (int)chooseFloorCB.SelectedItem;
-            int capacity = (int)chooseCapacityCB.SelectedItem;
-            bool isVip = chooseCategoryCB.SelectedItem.ToString() == "VIP";
-
-            // 3. Вычисляем typeId: 1-4 обычные, 5-8 VIP
-            int typeId = capacity + (isVip ? 4 : 0);
-
-            using (var context = new hotelSystemEntities1())
+            private void saveRoomBtn_Click_1(object sender, RoutedEventArgs e)
             {
+                if (chooseFloorCB.SelectedItem == null)
+                {
+                    MessageBox.Show("Выберите этаж", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (chooseCapacityCB.SelectedItem == null)
+                {
+                    MessageBox.Show("Выберите вместимость", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (chooseCategoryCB.SelectedItem == null)
+                {
+                    MessageBox.Show("Выберите категорию", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(insertRoomTB.Text))
+                {
+                    MessageBox.Show("Введите номер комнаты", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (!int.TryParse(insertRoomTB.Text.Trim(), out int roomNumber) || roomNumber <= 0)
+                {
+                    MessageBox.Show("Номер комнаты должен быть положительным числом", "Ошибка",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int floor = (int)chooseFloorCB.SelectedItem;
+                int capacity = (int)chooseCapacityCB.SelectedItem;
+                bool isVip = chooseCategoryCB.SelectedItem.ToString() == "VIP";
+
+                int typeId = capacity + (isVip ? 4 : 0);
+
+                using (var context = new hotelSystemEntities1())
+                {
+                    try
+                    {
+                        bool exists = context.rooms.Any(r => r.roomNumber == roomNumber);
+
+                        if (exists)
+                        {
+                            MessageBox.Show($"Номер комнаты {roomNumber} уже существует. Введите другой.",
+                                "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
+                        string savedImagePath = SaveRoomImage(roomNumber);
+
+                        var room = new rooms
+                        {
+                            roomNumber = roomNumber,
+                            roomFloor = floor,
+                            typeId = typeId,
+                            roomDescription = string.IsNullOrWhiteSpace(insertDescriptionTB.Text)
+                                ? null
+                                : insertDescriptionTB.Text.Trim(),
+
+                            roomImage = savedImagePath,
+
+                            roomStatusId = 1 
+                        };
+
+                        context.rooms.Add(room);
+                        context.SaveChanges();
+
+                        MessageBox.Show("Номер успешно добавлен", "Успех",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        this.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ошибка при сохранении: " + ex.Message, "Ошибка",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Копирует выбранное через ImageSelector фото в папку RoomImages
+            /// и возвращает относительный путь для сохранения в БД.
+            /// </summary>
+            private string SaveRoomImage(int roomNumber)
+            {
+                if (imageSelector.Uri == null)
+                    return null;
+
                 try
                 {
-                    // 4. Проверка уникальности номера комнаты
-                    bool exists = context.rooms.Any(r => r.roomNumber == roomNumber);
-                    if (exists)
+                    Uri selectedUri = imageSelector.Uri;
+
+                    string sourcePath;
+
+                    // Обычно ImageSelector возвращает file:///D:/...
+                    if (selectedUri.IsFile)
                     {
-                        MessageBox.Show($"Номер комнаты {roomNumber} уже существует. Введите другой.",
-                            "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
+                        sourcePath = selectedUri.LocalPath;
+                    }
+                    else
+                    {
+                        sourcePath = selectedUri.ToString();
                     }
 
-                    // 5. Создаём номер
-                    var room = new rooms
-                    {
-                        roomNumber = roomNumber,
-                        roomFloor = floor,
-                        typeId = typeId,
-                        roomDescription = string.IsNullOrWhiteSpace(insertDescriptionTB.Text)
-                            ? null : insertDescriptionTB.Text.Trim(),
-                        roomImage = imageSelector.Uri?.ToString(), // путь к изображению (если выбрано)
-                        roomStatusId = 1 // свободен
-                    };
+                    if (string.IsNullOrWhiteSpace(sourcePath) || !File.Exists(sourcePath))
+                        return null;
 
-                    context.rooms.Add(room);
-                    context.SaveChanges();
+                    string imagesFolder = Path.Combine(
+                        AppDomain.CurrentDomain.BaseDirectory,
+                        "RoomImages"
+                    );
 
-                    MessageBox.Show("Номер успешно добавлен", "Успех",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
+                    if (!Directory.Exists(imagesFolder))
+                        Directory.CreateDirectory(imagesFolder);
+
+                    string extension = Path.GetExtension(sourcePath);
+
+                    if (string.IsNullOrWhiteSpace(extension))
+                        extension = ".jpg";
+
+                    string fileName = $"room_{roomNumber}_{Guid.NewGuid()}{extension}";
+                    string destinationPath = Path.Combine(imagesFolder, fileName);
+
+                    File.Copy(sourcePath, destinationPath, true);
+
+                    // Именно это сохраняется в БД
+                    return $"RoomImages/{fileName}";
                 }
-                catch (Exception ex)
+                catch
                 {
-                    MessageBox.Show("Ошибка при сохранении: " + ex.Message, "Ошибка",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Не удалось сохранить изображение номера. Номер будет добавлен без фотографии.",
+                        "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                    return null;
                 }
             }
-        }
 
-        // Только цифры в номере комнаты
-        private void RoomNumberTB_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !e.Text.All(char.IsDigit);
-        }
-
-        private void RoomNumberTB_Pasting(object sender, DataObjectPastingEventArgs e)
-        {
-            if (e.DataObject.GetDataPresent(typeof(string)))
+            // Только цифры в номере комнаты
+            private void RoomNumberTB_PreviewTextInput(object sender, TextCompositionEventArgs e)
             {
-                string text = ((string)e.DataObject.GetData(typeof(string))).Replace(" ", "");
-                if (!text.All(char.IsDigit))
-                    e.CancelCommand();
+                e.Handled = !e.Text.All(char.IsDigit);
             }
-            else e.CancelCommand();
+
+            private void RoomNumberTB_Pasting(object sender, DataObjectPastingEventArgs e)
+            {
+                if (e.DataObject.GetDataPresent(typeof(string)))
+                {
+                    string text = ((string)e.DataObject.GetData(typeof(string))).Replace(" ", "");
+
+                    if (!text.All(char.IsDigit))
+                        e.CancelCommand();
+                }
+                else
+                {
+                    e.CancelCommand();
+                }
+            }
         }
     }
-}

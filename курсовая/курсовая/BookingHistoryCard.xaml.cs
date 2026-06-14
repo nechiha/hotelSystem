@@ -54,14 +54,13 @@ namespace курсовая
                     var booking = context.bookings.Find(bookingId);
                     if (booking != null)
                     {
-                        booking.bookingStatusId = 2; // Отменено
+                        booking.bookingStatusId = 2;
                         context.SaveChanges();
                     }
 
                     MessageBox.Show("Бронирование отменено", "Готово",
                         MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    // Закрываем окно просмотра — список обновится в bookingHistoryPage
                     Window.GetWindow(this)?.Close();
                 }
                 catch (Exception ex)

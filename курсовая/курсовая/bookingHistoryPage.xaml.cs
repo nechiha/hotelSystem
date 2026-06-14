@@ -28,7 +28,6 @@ namespace курсовая
             {
                 DateTime today = DateTime.Today;
 
-                // 1. Основные данные броней (без опций)
                 var rawData = context.bookingRooms
                     .Include(br => br.bookings)
                     .Include(br => br.bookings.clients)
@@ -49,16 +48,14 @@ namespace курсовая
                         br.departureDate,
                         br.bookings.bookingStatusId
                     })
-                    .ToList(); // выполняем запрос -> дальше работаем в памяти
+                    .ToList();
 
-                // 2. Все опции одним запросом: bookingId -> список названий услуг
                 var optionsByBooking = context.bookingOptions
                     .Select(bo => new { bo.bookingId, bo.options.optionName })
                     .ToList()
                     .GroupBy(x => x.bookingId)
                     .ToDictionary(g => g.Key, g => g.Select(x => x.optionName).ToList());
 
-                // 3. Формируем итоговый список (в памяти)
                 var bookings = rawData.Select(item =>
                 {
                     string displayStatus;
@@ -85,26 +82,21 @@ namespace курсовая
                         statusColor = new SolidColorBrush(Color.FromRgb(0x4C, 0xAF, 0x50));
                     }
 
-                    // опции для этой брони
                     string extraOptions = optionsByBooking.TryGetValue(item.bookingId, out var opts) && opts.Any()
                         ? string.Join(", ", opts)
                         : "—";
 
-                    // Фактически проведённые дни
                     int daysSpent;
                     if (item.bookingStatusId == 2 || item.arrivingDate.Date > today)
                     {
-                        // отменено или ещё не заехал
                         daysSpent = 0;
                     }
                     else if (item.departureDate.Date < today)
                     {
-                        // завершено — полная длительность
                         daysSpent = (item.departureDate.Date - item.arrivingDate.Date).Days;
                     }
                     else
                     {
-                        // текущее — сколько уже прошло с момента заезда
                         daysSpent = (today - item.arrivingDate.Date).Days;
                     }
 
